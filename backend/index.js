@@ -5,7 +5,7 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 import { PrismaClient } from "@prisma/client";
-const prisma = require("@prisma/client");
+const prisma = new PrismaClient();
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
