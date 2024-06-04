@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
+model Players {
   id     String @id @default(uuid())
   name   String @unique
   points Int
