@@ -1,34 +1,23 @@
 import LeaderBoard from "@/components/LeaderBoard";
 import Upvotebutton from "@/components/Upvotebutton";
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import {prisma} from "../../backend/prisma";
 
-export default function Home() {
-  const prismaImp = async()=>{ 
-    const user = await prisma.users.findMany(
-      {
-        select:{
-          name: true,
-          points: true
-      }
-      }
-    )
+export default async function Home() {
+  const getPlayers = async()=>{ 
+    const user = await prisma.players.findMany();
     console.log(user);
     return user;
-    
   }
-    const user = prismaImp()
-    .catch(e=>{
-      console.log(e.message);
-    })
-    .finally(async()=>{
-      await prisma.$disconnect()
-  })
+    const players = await getPlayers();
+    console.log(players);
 
     return (
     <main className="h-screen flex-col items-center justify-between p-24">
-      <LeaderBoard/>
-      <Upvotebutton userArray={user}/>
+      <LeaderBoard initialPlayers={players}/>
+      {players.map((player:any)=>{
+        return <Upvotebutton player={player} key={player.id}/>
+      })}
+      
     </main>
   );
 }

@@ -1,9 +1,25 @@
 "use client"
 
-import React from 'react'
+import { useState, useEffect, MutableRefObject, useRef } from "react";
 import FlipMove from "react-flip-move";
+import { io, Socket } from "socket.io-client";
 
-const LeaderBoard = () => {
+const LeaderBoard = ({ initialPlayers }: { initialPlayers: any }) => {
+
+  const [players, setPlayers] = useState(initialPlayers || []);
+  const [updatedPlayerId, setUpdatedPlayerId] = useState<number | null>(null);
+  
+  let socketRef: MutableRefObject<Socket | null> = useRef(null);
+  
+  useEffect(()=>{
+    setPlayers((prevPlayers) =>
+      prevPlayers.map((player) =>
+        player.id === updatedPlayer.id ? updatedPlayer : player
+      )
+    );
+    setUpdatedPlayerId(updatedPlayer.id);
+  },[]);
+  
   return (
     <div className="w-full p-4">
       <p className="text-center text-gray text-xl font-semibold mb-4">
