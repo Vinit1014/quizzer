@@ -31,3 +31,16 @@ body {
     text-wrap: balance;
   }
 }
+
+@keyframes blink {
+  0%, 100% {
+    background-color: white;
+  }
+  50% {
+    background-color: #456ef3;  /*16A394*/
+  }
+}
+
+.blink {
+  animation: blink 1s ease-out;
+}
