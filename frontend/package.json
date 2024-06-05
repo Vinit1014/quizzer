@@ -11,12 +11,19 @@
   "dependencies": {
     "@prisma/client": "^5.14.0",
     "@prisma/extension-pulse": "^1.1.0",
+    "@radix-ui/react-alert-dialog": "^1.0.5",
+    "@radix-ui/react-slot": "^1.0.2",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.383.0",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
     "react-flip-move": "^3.0.5",
     "socket.io": "^4.7.5",
-    "socket.io-client": "^4.7.5"
+    "socket.io-client": "^4.7.5",
+    "tailwind-merge": "^2.3.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/node": "^20.12.13",
