@@ -22,7 +22,8 @@ model Player {
 }
 
 model Room {
-  id       String   @id @default(uuid())
-  roomName String   @unique
+  id      String   @id @default(uuid())
+  roomName String  @unique
   players  Player[]
 }
+

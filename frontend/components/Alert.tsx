@@ -14,7 +14,6 @@ import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-
 interface ButtonProps {
   text:String  
   isJoin:Boolean
@@ -33,7 +32,27 @@ const AlertDialogDemo : React.FC<ButtonProps> = ({text,isJoin}) => {
   },[room])
   
   const router = useRouter();
-  const continueBtn = ()=>{
+  const continueBtn = async()=>{
+    try{
+      const response = await fetch("/api/create",{
+        method:"POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({roomName: room, playerName: name}),
+      })
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Room and player created:', result);
+        router.push(`/${room}/${name}`);
+      }
+      else{
+        console.error("Failed to create room and player");
+      }
+    }catch(error){
+      console.log(error);
+    }
     router.push(`/${room}/${name}`)
   };
 

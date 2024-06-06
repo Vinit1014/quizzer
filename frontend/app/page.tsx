@@ -8,6 +8,8 @@ import AlertDialogDemo from "@/components/Alert";
 
 
 export default async function Home() {
+
+  
   // const getPlayers = async()=>{ 
   //   const user = await prisma.players.findMany();
   //   console.log(user);
@@ -15,7 +17,7 @@ export default async function Home() {
   // }
   // const players = await getPlayers();
   // console.log(players);
-
+  
     return (
       <>
         <Navbar/>
