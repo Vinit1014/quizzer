@@ -13,8 +13,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Players {
+model Player {
   id     String @id @default(uuid())
   name   String @unique
   points Int
+  roomId String
+  room   Room   @relation(fields: [roomId], references: [id])
+}
+
+model Room {
+  id       String   @id @default(uuid())
+  roomName String   @unique
+  players  Player[]
 }

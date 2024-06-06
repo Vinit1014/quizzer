@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import ButtonComp from "@/components/Button";
 import AlertDialogDemo from "@/components/Alert";
 
+
 export default async function Home() {
   // const getPlayers = async()=>{ 
   //   const user = await prisma.players.findMany();
@@ -25,14 +26,14 @@ export default async function Home() {
             <div className="flex justify-between ">
               <div 
                 className="">
-                <AlertDialogDemo text={"Join an existing room"}/>
+                <AlertDialogDemo text={"Join an existing room"} isJoin={true}/>
                 {/* <ButtonComp text={"Join an existing room"}/> */}
               </div>
               <div className="font-bold py-1">
                 Or
               </div>
               <div className="">
-                <AlertDialogDemo text={"Create a new room"}/>
+                <AlertDialogDemo text={"Create a new room"} isJoin={false}/>
                 {/* <ButtonComp text={"Create a new room"}/> */}
               </div>
             </div>
