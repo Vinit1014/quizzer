@@ -16,11 +16,11 @@ export async function POST(req:Request){
             },
             include:{ players: true },
         })    
-        console.log("Successfull");
+        // console.log("Successfull");
         return NextResponse.json({data:room});
 
     }catch(error){
-        console.log(error);
+        // console.log(error);
         return NextResponse.json({ error: 'An error occurred while creating the room and player' }, { status: 500 });
     }
 }
