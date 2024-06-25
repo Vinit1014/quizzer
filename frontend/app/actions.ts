@@ -3,7 +3,7 @@ import {prisma} from "../../backend/prisma";
 
 export async function addPoints({ points, playerId }: { points: number; playerId: string }) {
   console.log(`addPoints, `, points, playerId);
-  const updatedPlayer = await prisma.players.update({
+  const updatedPlayer = await prisma.player.update({
     where: { id: playerId },
     data: { points: { increment: points } },
   });

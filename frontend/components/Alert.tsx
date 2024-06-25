@@ -22,7 +22,7 @@ interface ButtonProps {
 const AlertDialogDemo : React.FC<ButtonProps> = ({text,isJoin}) => {
   const [room,setRoom] = useState('');
   const [name,setName] = useState('');
-
+  
   useEffect(()=>{
     console.log(name);
   },[name])
@@ -32,30 +32,31 @@ const AlertDialogDemo : React.FC<ButtonProps> = ({text,isJoin}) => {
   },[room])
   
   const router = useRouter();
-  const continueBtn = async()=>{
-    try{
-      const response = await fetch("/api/create",{
-        method:"POST",
+  const continueBtn = async () => {
+    try {
+      const response = await fetch("/api/create", {
+        method: "POST",
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({roomName: room, playerName: name}),
-      })
-
+        body: JSON.stringify({ roomName: room, playerName: name }),
+      });
+      
       if (response.ok) {
         const result = await response.json();
         console.log('Room and player created:', result);
-        router.push(`/${room}/${name}`);
-      }
-      else{
+        
+        // Assuming result.data contains the room and player information
+        const playerId = result.data.player.id;  // Ensure the server response has player.id
+        router.push(`/${room}/${playerId}`);
+      } else {
         console.error("Failed to create room and player");
       }
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
-    router.push(`/${room}/${name}`)
   };
-
+  
   return (
       <AlertDialog>
         <AlertDialogTrigger asChild>
@@ -68,9 +69,9 @@ const AlertDialogDemo : React.FC<ButtonProps> = ({text,isJoin}) => {
                 {isJoin ? <h1 className="text-xl my-1">Join an existing room</h1>: <h1 className="text-xl my-1">Create a new room</h1>}
               </div>
               <h1 className="px-1">Enter the room name</h1> 
-              <input onChange={(e)=>{setRoom(e.target.value)}} className="w-full p-1 my-1 border-2 border-slate-300 rounded-md" placeholder="Roomname"/>
+              <input onChange={(e)=>{setRoom(e.target.value)}} className="w-full px-2 p-1 my-1 border-2 border-slate-300 rounded-md" placeholder="Roomname"/>
               <h1 className="my-2 px-1  ">Enter the username</h1>
-              <input onChange={(e)=>{setName(e.target.value)}} className="w-full p-1 border-2 border-slate-300 rounded-md" placeholder="Username"/>
+              <input onChange={(e)=>{setName(e.target.value)}} className="w-full px-2 p-1 border-2 border-slate-300 rounded-md" placeholder="Username"/>
               <p className="text-sm text-gray-500 mt-1 px-1">
                 This username will be displayed in the real-time leaderboard.
               </p>

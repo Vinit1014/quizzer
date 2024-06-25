@@ -26,4 +26,3 @@ model Room {
   roomName String  @unique
   players  Player[]
 }
-

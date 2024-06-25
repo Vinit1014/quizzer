@@ -6,10 +6,8 @@ import Navbar from "@/components/Navbar";
 import ButtonComp from "@/components/Button";
 import AlertDialogDemo from "@/components/Alert";
 
-
 export default async function Home() {
 
-  
   // const getPlayers = async()=>{ 
   //   const user = await prisma.players.findMany();
   //   console.log(user);

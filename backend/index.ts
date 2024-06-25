@@ -1,4 +1,3 @@
-
 import http from "http";
 import { Server } from "socket.io";
 import { prisma } from "./prisma";
@@ -24,6 +23,7 @@ const httpServer = http.createServer((req, res) => {
 const io = new Server(httpServer, {
   cors: {
     origin: '*',
+    // origin: corsOrigins,
     methods: ["GET", "POST"],
     // credentials: true,
   },
@@ -40,23 +40,31 @@ process.on("SIGINT", () => {
 
 async function main(io: Server) {
 
-  // console.log("Working fine");
-  
-  const stream = await prisma.player.stream();
-
-  process.on("exit", () => {
-    stream.stop();
-  });
-
-  for await (const event of stream) {
-    console.log("just received an event:", event);
-
-    if (event.action === "update") {
-      io.sockets.emit("player_points", event);
+  console.log("Working fine");
+  const player1 = await prisma.player.create({
+    data:{
+        name:"Yash",
+        points: 20,
+        roomId: 'r1'
     }
-  }
-
+  })
+  console.log(player1);
+  
+  // const stream = await prisma.player.stream();
+  
+  // process.on("exit", () => {
+  //   stream.stop();
+  // });
+  
   // await prisma.player.deleteMany()
   // await prisma.room.deleteMany()
-
+  // for await (const event of stream) {
+    
+  //   console.log("just received an event:", event);
+      
+  //   if (event.action === "update") {
+  //     io.sockets.emit("player_points", event);
+  //   }
+  // }
 }
+
