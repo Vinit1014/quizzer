@@ -6,28 +6,20 @@ export async function POST(req:Request){
         const body = await req.json();
         const {roomName, playerName} = body;
         console.log(roomName);
-        const player1 = await prisma.player.create({
+        const room = await prisma.room.create({
             data:{
-                name:"Yashu",
-                points: 20,
-                roomId: 'r1'
-            }
-        })
-        return NextResponse.json({data:player1});
-        // const room = await prisma.room.create({
-        //     data:{
-        //         roomName,
-        //         players:{
-        //             create: [
-        //                 { name: playerName, points: 0 },
-        //             ],
-        //         },
-        //     },
-        //     include:{ players: true },
-        // })    
-        // console.log("Successfull");
-        // return NextResponse.json({data:room});
+                roomName,
+                players:{
+                    create: [
+                        { name: playerName, points: 0 },
+                    ],
+                },
+            },
+            include:{ players: true },
+        })    
+        return NextResponse.json({data:room});
         // return NextResponse.json({data:"Success"});
+        // console.log("Successfull");
     
     }catch(error){
         // console.log(error);

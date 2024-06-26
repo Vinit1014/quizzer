@@ -41,30 +41,24 @@ process.on("SIGINT", () => {
 async function main(io: Server) {
 
   console.log("Working fine");
-  const player1 = await prisma.player.create({
-    data:{
-        name:"Yash",
-        points: 20,
-        roomId: 'r1'
-    }
-  })
-  console.log(player1);
+  const stream = await prisma.player.stream();
   
-  // const stream = await prisma.player.stream();
-  
-  // process.on("exit", () => {
-  //   stream.stop();
-  // });
+  process.on("exit", () => {
+    stream.stop();
+  });
   
   // await prisma.player.deleteMany()
   // await prisma.room.deleteMany()
-  // for await (const event of stream) {
+  for await (const event of stream) {
     
-  //   console.log("just received an event:", event);
-      
-  //   if (event.action === "update") {
-  //     io.sockets.emit("player_points", event);
-  //   }
-  // }
+    console.log("just received an event:", event);  
+    
+    if (event.action === "update") {
+      io.sockets.emit("player_points", event);
+    }
+    else if (event.action === "create"){
+      io.sockets.emit("new_player", event);
+    }
+  }
 }
 

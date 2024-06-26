@@ -27,7 +27,7 @@ const LeaderBoard = ({ initialPlayers }: { initialPlayers: any }) => {
     socketRef.current.on("connect_error", (err) => {
       console.error(`Connection error: ${err.message}`);
     });
-
+    
     socketRef.current.on("player_points", (event:any) => {
       console.log("received UPDATE event from server", event);
       updatePoints(event.after);
