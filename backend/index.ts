@@ -50,7 +50,6 @@ async function main(io: Server) {
   // await prisma.player.deleteMany()
   // await prisma.room.deleteMany()
   for await (const event of stream) {
-    
     console.log("just received an event:", event);  
     
     if (event.action === "update") {
@@ -61,4 +60,3 @@ async function main(io: Server) {
     }
   }
 }
-
