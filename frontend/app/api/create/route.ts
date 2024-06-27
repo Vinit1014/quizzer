@@ -9,13 +9,16 @@ export async function POST(req:Request){
         const room = await prisma.room.create({
             data:{
                 roomName,
+                quizDescription: '', // Initial value, to be updated later
+                quizDuration: 0, // Initial value, to be updated later
+                quizTitle: '', // Initial value, to be updated later
                 players:{
                     create: [
-                        { name: playerName, points: 0 },
+                        { name: playerName, points: 0, role:'TEACHER' },
                     ],
                 },
             },
-            include:{ players: true },
+            // include:{ players: true },
         })    
         return NextResponse.json({data:room});
         // return NextResponse.json({data:"Success"});

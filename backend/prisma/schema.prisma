@@ -17,12 +17,39 @@ model Player {
   id     String @id @default(uuid())
   name   String @unique
   points Int
+  role   Role   @default(STUDENT)
   roomId String
   room   Room   @relation(fields: [roomId], references: [id])
 }
 
 model Room {
-  id      String   @id @default(uuid())
-  roomName String  @unique
-  players  Player[]
+  id              String     @id @default(uuid())
+  roomName        String     @unique
+  players         Player[]
+  quizTitle       String
+  quizDescription String?
+  quizDuration    Int
+  questions       Question[]
 }
+
+model Question {
+  id           String   @id @default(uuid())
+  questionText String
+  roomId       String
+  room         Room     @relation(fields: [roomId], references: [id])
+  answers      Answer[]
+}
+
+model Answer {
+  id         String   @id @default(uuid())
+  answerText String
+  isCorrect  Boolean
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id])
+}
+
+enum Role {
+  TEACHER
+  STUDENT
+}
+
