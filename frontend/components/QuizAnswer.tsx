@@ -1,7 +1,10 @@
 'use client'
-import React from 'react'
+import React,{useEffect, useState} from 'react';
+import { prisma } from '@backend/prisma'
 
-const QuizAnswer = () => {
+const QuizAnswer = async() => {
+  
+  
   return (
     <div>QuizAnswer</div>
   )

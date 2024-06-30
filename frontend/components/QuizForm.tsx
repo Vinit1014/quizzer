@@ -1,9 +1,14 @@
+
+// QuizForm.tsx
 'use client';
 
 import React, { useState } from 'react';
 import { toast, Toaster } from 'sonner';
+import io, { Socket } from 'socket.io-client';
 
-// Define types for question and answer
+const SOCKET_URL = 'http://localhost:8000'; // Replace with your server URL
+const socket: Socket = io(SOCKET_URL);
+
 interface Answer {
   answerText: string;
   isCorrect: boolean;
@@ -14,16 +19,25 @@ interface Question {
   answers: Answer[];
 }
 
-const QuizForm = ({ roomName }: { roomName: any }) => {
+const QuizForm = ({ roomName, onStartTimer }: { roomName: string, onStartTimer: () => void }) => {
+  
   const [quizTitle, setQuizTitle] = useState('');
   const [quizDescription, setQuizDescription] = useState('');
-  const [quizDuration, setQuizDuration] = useState('');
+  const [quizDuration, setQuizDurationLocal] = useState('');
+  const [mainDuration, setMainDuration] = useState();
+
   const [currentQuestion, setCurrentQuestion] = useState('');
   const [answers, setAnswers] = useState(['', '', '', '']);
   const [correctAnswer, setCorrectAnswer] = useState<number | null>(null);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [roomId, setRoomId] = useState('');
-  const [showQuizForm, setShowQuizForm] = useState(true); // State to toggle visibility
+  const [showQuizForm, setShowQuizForm] = useState(true); 
+  const [showQuestions, setShowQuestions] = useState(false);
+
+  const startTimer = () => {
+    onStartTimer();
+    socket.emit('start-timer', mainDuration);
+  };
 
   const handleAddQuestion = async () => {
     const newQuestion: Question = {
@@ -78,17 +92,18 @@ const QuizForm = ({ roomName }: { roomName: any }) => {
           quizDuration: parseInt(quizDuration, 10),
         }),
       });
-
+      
       if (response.ok) {
         const result = await response.json();
         setRoomId(result.data.id);
+        setMainDuration(result.data.quizDuration);
+        // setQuizDuration(parseInt(quizDuration, 10));
         toast.success('Quiz details saved successfully', { id: toastId });
-        setShowQuizForm(false); // Hide quiz form and show question form
+        setShowQuizForm(false);
 
-        // Clear the form data
         setQuizTitle('');
         setQuizDescription('');
-        setQuizDuration('');
+        // setQuizDurationLocal('');
       } else {
         toast.error('Failed to save quiz details', { id: toastId });
       }
@@ -101,8 +116,7 @@ const QuizForm = ({ roomName }: { roomName: any }) => {
   return (
     <div className="container mx-auto p-4">
       <Toaster richColors />
-      {showQuizForm ? 
-     
+      {showQuizForm ? (
         <div>
           <h1 className="text-2xl mb-4">Create Quiz</h1>
           <form onSubmit={handleSubmitQuizDetails}>
@@ -129,7 +143,7 @@ const QuizForm = ({ roomName }: { roomName: any }) => {
               <input
                 type="number"
                 value={quizDuration}
-                onChange={(e) => setQuizDuration(e.target.value)}
+                onChange={(e) => setQuizDurationLocal(e.target.value)}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 required
               />
@@ -144,7 +158,7 @@ const QuizForm = ({ roomName }: { roomName: any }) => {
             </div>
           </form>
         </div>
-        :
+      ) : (
         <div>
           <button
             className="mb-4 bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -204,31 +218,52 @@ const QuizForm = ({ roomName }: { roomName: any }) => {
             </button>
           </div>
           <div>
-            <h2 className="text-xl mb-2">Current Questions Added</h2>
-            <ul className="space-y-4">
-              {questions.map((question, index) => (
-                <li key={index} className="border border-gray-200 rounded-lg p-4 shadow-sm">
-                  <h3 className="font-bold text-lg mb-2">{(index+1) + ". " + question.questionText}</h3>
-                  <ul className="space-y-1">
-                    {question.answers.map((answer, idx) => (
-                      <li
-                        key={idx}
-                        className={`p-2 rounded ${
-                          answer.isCorrect ? 'bg-green-100' : 'bg-red-100'
-                        }`}
-                      >
-                        {answer.answerText} {answer.isCorrect && <span className="font-bold">(Correct)</span>}
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              ))}
-            </ul>
+            <button
+              type="button"
+              onClick={() => setShowQuestions(!showQuestions)}
+              className="bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              {showQuestions ? 'Hide' : 'Show'} Current Questions
+            </button>
+            {showQuestions && (
+              <div>
+                <h2 className="text-xl mb-2">Current Questions Added</h2>
+                <ul className="space-y-4">
+                  {questions.map((question, index) => (
+                    <li key={index} className="border border-gray-200 rounded-lg p-4 shadow-sm">
+                      <h3 className="font-bold text-lg mb-2">{(index + 1) + ". " + question.questionText}</h3>
+                      <ul className="space-y-1">
+                        {question.answers.map((answer, idx) => (
+                          <li
+                            key={idx}
+                            className={`p-2 rounded ${answer.isCorrect ? 'bg-green-100' : 'bg-red-100'}`}
+                          >
+                            {answer.answerText} {answer.isCorrect && <span className="font-bold">(Correct)</span>}
+                          </li>
+                        ))}
+                      </ul>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+          <div className="mb-4">
+            <button
+              type="button"
+              onClick={startTimer}
+              className="bg-gray-800 hover:bg-gray-950 text-white font-bold my-4 py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Start Timer
+            </button>
           </div>
         </div>
-        }
+      )}
     </div>
   );
 };
 
 export default QuizForm;
+             
+
+

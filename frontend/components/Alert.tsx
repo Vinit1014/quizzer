@@ -28,7 +28,7 @@ const AlertDialogDemo: React.FC<ButtonProps> = ({ text, isJoin }) => {
   const [loading, setLoading] = useState(false);
   const [navigationOccurred, setNavigationOccurred] = useState(false);
   // const [errors, setErrors] = useState<{ roomName?: string; playerName?: string }>({});
-
+  
   const socketRef: MutableRefObject<Socket | null> = useRef(null);
   const router = useRouter();
 
@@ -46,7 +46,7 @@ const AlertDialogDemo: React.FC<ButtonProps> = ({ text, isJoin }) => {
       console.log(room); // Use the room state
       setNavigationOccurred(true);
       toast.success('Taking you to your room...');
-
+      
       setTimeout(() => {
         router.push(`/${room}/${event.created.id}`);
       }, 2000); // Delay the navigation to allow the user to read the message

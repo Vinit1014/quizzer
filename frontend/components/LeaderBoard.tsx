@@ -67,5 +67,3 @@ const LeaderBoard = ({ initialPlayers }: { initialPlayers: any }) => {
 };
 
 export default LeaderBoard;
-
-
