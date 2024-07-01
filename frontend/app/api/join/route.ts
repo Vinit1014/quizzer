@@ -6,7 +6,7 @@ export async function POST(req:Request){
         const body = await req.json();
         const {roomName, playerName} = body;
         console.log(roomName);
-
+        
         const room = await prisma.room.findFirst({
             where:{
                 roomName: roomName,
@@ -16,7 +16,7 @@ export async function POST(req:Request){
         if (!room){
             return NextResponse.json({error: "Room not found"},{ status: 404});
         }
-
+        
         const player = await prisma.player.create({
             data:{
                 name:playerName,

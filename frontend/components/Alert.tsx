@@ -28,7 +28,7 @@ const AlertDialogDemo: React.FC<ButtonProps> = ({ text, isJoin }) => {
   const [loading, setLoading] = useState(false);
   const [navigationOccurred, setNavigationOccurred] = useState(false);
   // const [errors, setErrors] = useState<{ roomName?: string; playerName?: string }>({});
-  
+
   const socketRef: MutableRefObject<Socket | null> = useRef(null);
   const router = useRouter();
 
@@ -89,7 +89,7 @@ const AlertDialogDemo: React.FC<ButtonProps> = ({ text, isJoin }) => {
         },
         body: JSON.stringify({ roomName: room, playerName: name }),
       });
-
+      
       if (response.ok) {
         const result = await response.json();
         setNewUser(true);

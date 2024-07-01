@@ -13,9 +13,11 @@ const socket: Socket = io(SOCKET_URL);
 interface RoomPageProps {
     playerRole: 'TEACHER' | 'STUDENT';
     roomName: string;
+    roomId: any;
+    playerId: any
 }
 
-const RoomPage: React.FC<RoomPageProps> = ({ playerRole, roomName}) => {
+const RoomPage: React.FC<RoomPageProps> = ({ playerRole, roomName, roomId, playerId}) => {
     const [timerStarted, setTimerStarted] = useState(false);
     // useEffect(()=>{
 
@@ -30,11 +32,11 @@ const RoomPage: React.FC<RoomPageProps> = ({ playerRole, roomName}) => {
             {playerRole === 'TEACHER' ? (
                 <QuizForm roomName={roomName} onStartTimer={handleStartTimer} />
             ) : (
-                <QuizAnswer />
+                <QuizAnswer roomName={roomName} roomId={roomId} playerId={playerId}/>
             )}
             <Timer/>
         </div>
-     );
+    );
 };
 
 export default RoomPage;

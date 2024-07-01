@@ -7,9 +7,9 @@ import { io, Socket } from "socket.io-client";
 const LeaderBoard = ({ initialPlayers }: { initialPlayers: any }) => {
   const [players, setPlayers] = useState(initialPlayers || []);
   const [updatedPlayerId, setUpdatedPlayerId] = useState<number | null>(null);
-  
+
   let socketRef: MutableRefObject<Socket | null> = useRef(null);
-  
+
   useEffect(() => {
     const updatePoints = (updatedPlayer:any) => {
       setPlayers((prevPlayers:any) =>
@@ -39,7 +39,7 @@ const LeaderBoard = ({ initialPlayers }: { initialPlayers: any }) => {
   }, [players]); // Empty dependency array ensures this runs only once
   
   const sortedPlayers = [...players].sort((a,b) => b.points - a.points);
-
+  
   return (
     <div className="w-full p-4">
       <p className="text-center text-gray text-xl font-semibold mb-4">
