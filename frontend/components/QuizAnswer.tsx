@@ -2,6 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import { addPoints } from '@/app/actions';
 import { decPoints } from '@/app/actions';
+import io, { Socket } from 'socket.io-client';
+
+const SOCKET_URL = 'http://localhost:8000'; // Replace with your server URL
+const socket: Socket = io(SOCKET_URL);
 
 const QuizAnswer = ({ roomName, roomId, playerId }: { roomName: string, roomId: any, playerId: any }) => {
   const [questions, setQuestions] = useState<any>([]);
@@ -12,7 +16,30 @@ const QuizAnswer = ({ roomName, roomId, playerId }: { roomName: string, roomId: 
   const [quizStarted, setQuizStarted] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [playerPoints, setPlayerPoints] = useState<number>(0);
+  const [timeLeft, setTimeLeft] = useState<number>(0);
+
+  useEffect(() => {
+    if (timeLeft === 0 && quizStarted && !quizCompleted) {
+      setQuizCompleted(true);
+      getPlayerPoints();
+    }
+  }, [timeLeft, quizStarted, quizCompleted]);
   
+  useEffect(() => {
+    socket.on('updateTimer', (newTime: number) => {
+      setTimeLeft(newTime);
+    });
+
+    socket.on('quiz-ended', () => {
+      setQuizCompleted(true);
+      getPlayerPoints();
+    });
+
+    return () => {
+      socket.off('updateTimer');
+      socket.off('quiz-ended');
+    };
+  }, []);
 
   useEffect(()=>{
     console.log(quizDetails);

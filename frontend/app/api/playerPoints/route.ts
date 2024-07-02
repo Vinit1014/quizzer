@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     if (!player) {
       return NextResponse.json({ error: 'Player not found' }, { status: 404 });
     }
-
+    
     return NextResponse.json({ data: player });
   } catch (error) {
     console.log(error);

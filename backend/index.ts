@@ -55,6 +55,7 @@ io.on("connection",(socket)=>{
       else{
         clearInterval(timerInterval!);
         timerInterval = null;
+        io.emit('quiz-ended');
       }
     }, 1000);
   })
@@ -91,6 +92,7 @@ async function main(io: Server) {
     }
     else if (event.action === "create"){
       io.sockets.emit("new_player", event);
+      io.sockets.emit("update-leaderboard");
     }
   }
 }

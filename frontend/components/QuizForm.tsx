@@ -118,46 +118,48 @@ const QuizForm = ({ roomName, onStartTimer }: { roomName: string, onStartTimer: 
       <Toaster richColors />
       {showQuizForm ? (
         <div>
-          <h1 className="text-2xl mb-4">Create Quiz</h1>
-          <form onSubmit={handleSubmitQuizDetails}>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">Quiz Title</label>
-              <input
-                type="text"
-                value={quizTitle}
-                onChange={(e) => setQuizTitle(e.target.value)}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">Quiz Description</label>
-              <textarea
-                value={quizDescription}
-                onChange={(e) => setQuizDescription(e.target.value)}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">Quiz Duration (minutes)</label>
-              <input
-                type="number"
-                value={quizDuration}
-                onChange={(e) => setQuizDurationLocal(e.target.value)}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <button
-                type="submit"
-                className="bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              >
-                Save Quiz Details
-              </button>
-            </div>
-          </form>
-        </div>
+        <h1 className="text-2xl mb-4">Create Quiz</h1>
+        <form onSubmit={handleSubmitQuizDetails}>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">Quiz Title</label>
+            <input
+              type="text"
+              value={quizTitle}
+              onChange={(e) => setQuizTitle(e.target.value)}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              style={{ height: '3rem' }} // Adjust height as needed
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">Quiz Description</label>
+            <textarea
+              value={quizDescription}
+              onChange={(e) => setQuizDescription(e.target.value)}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              style={{ minHeight: '8rem' }} // Adjust height as needed
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">Quiz Duration (minutes)</label>
+            <input
+              type="number"
+              value={quizDuration}
+              onChange={(e) => setQuizDurationLocal(e.target.value)}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <button
+              type="submit"
+              className="bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Save Quiz Details
+            </button>
+          </div>
+        </form>
+      </div>      
       ) : (
         <div>
           <button

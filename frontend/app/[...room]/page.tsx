@@ -1,6 +1,10 @@
 import { prisma } from "@backend/prisma";
 import RoomPage from "@/components/RoomPage";
 import LeaderBoard from "@/components/LeaderBoard";
+import io, { Socket } from 'socket.io-client';
+
+const SOCKET_URL = 'http://localhost:8000'; // Replace with your server URL
+const socket: Socket = io(SOCKET_URL);
 
 export default async function Page({ params }: { params: { room: string } }) {
     const player = await prisma.player.findUnique({
@@ -11,19 +15,25 @@ export default async function Page({ params }: { params: { room: string } }) {
         return <div>Error: Player not found</div>;
     }
     
+    socket.on("update-leaderboard",async()=>{
+        console.log("New user joineddddddddd");
+        players = await getPlayers();
+    })
     const roomm = await prisma.room.findUnique({
         where: {roomName: params.room[0]},
     })
 
     async function getPlayers(){
         const players = await prisma.player.findMany({
-            where: {role: 'STUDENT'}
+            where: {role: 'STUDENT', roomId:roomm?.id}
         });
         return players;
     }
-    const players = await getPlayers();
+    
+    let players = await getPlayers();
+    // const interval = setInterval(getPlayers, 10000);
     console.log(players);
-
+    
     // return (
     //     <h1>{player.role}</h1>
     //     // <h1>Hi room</h1>
@@ -31,13 +41,13 @@ export default async function Page({ params }: { params: { room: string } }) {
 
     return (
         <>
-        <LeaderBoard initialPlayers={players}/>
         <RoomPage
             roomId={roomm?.id}
             playerId={params.room[1]}
             playerRole={player.role}
             roomName={params.room[0]}
             />
+        <LeaderBoard initialPlayers={players} roomId={roomm?.id}/>
         </>
     );
 }
