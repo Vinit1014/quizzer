@@ -12,7 +12,7 @@ export default async function Home() {
         
           <div className="max-w-xl text-center">
             <h2 className="text-4xl font-bold mb-8">Welcome to Quizzer</h2>
-            <p className="text-lg mb-4">"Compete with your colleagues with real time leaderboard."</p>
+            <p className="text-lg mb-4">&quot;Compete with your colleagues with real time leaderboard.&quot;</p>
             <div className="flex justify-between ">
               <div 
                 className="">
