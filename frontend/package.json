@@ -9,8 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@prisma/client": "^5.14.0",
-    "@prisma/extension-pulse": "^1.1.0",
+    "@prisma/client": "^5.16.1",
+    "@prisma/extension-pulse": "^1.1.1",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-slot": "^1.0.2",
     "class-variance-authority": "^0.7.0",
@@ -29,14 +29,14 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/node": "^20.12.13",
+    "@types/node": "^20.14.9",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/socket.io-client": "^3.0.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
     "postcss": "^8",
-    "prisma": "^5.14.0",
+    "prisma": "^5.16.1",
     "tailwindcss": "^3.4.1",
     "ts-node": "^10.9.2",
     "typescript": "^5"

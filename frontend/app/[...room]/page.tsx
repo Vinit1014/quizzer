@@ -1,4 +1,5 @@
-import { prisma } from "@backend/prisma";
+// import { prisma } from "@backend/prisma";
+import { prisma } from "@/prisma";
 import RoomPage from "@/components/RoomPage";
 import LeaderBoard from "@/components/LeaderBoard";
 import io, { Socket } from 'socket.io-client';

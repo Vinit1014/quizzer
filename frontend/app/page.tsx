@@ -1,10 +1,6 @@
 'use client'
-import LeaderBoard from "@/components/LeaderBoard";
-import Upvotebutton from "@/components/Upvotebutton";
-import {prisma} from "../../backend/prisma";
-import RoomBtn from "@/components/RoomBtn";
+
 import Navbar from "@/components/Navbar";
-import ButtonComp from "@/components/Button";
 import AlertDialogDemo from "@/components/Alert";
 import { motion } from "framer-motion"
 
