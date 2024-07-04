@@ -9,7 +9,6 @@
     "typeRoots": [
       "./node_modules/@types"
     ] /* List of folders to include type definitions from. */,
-    "types": ["@prisma/extension-pulse","node"],
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noEmit": true,
