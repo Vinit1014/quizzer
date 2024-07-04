@@ -40,6 +40,7 @@ const QuizForm = ({ roomName, onStartTimer }: { roomName: string, onStartTimer: 
   };
 
   const handleAddQuestion = async () => {
+    const toastId = toast.loading('Adding question...');
     const newQuestion: Question = {
       questionText: currentQuestion,
       answers: answers.map((answer, index) => ({
@@ -62,10 +63,10 @@ const QuizForm = ({ roomName, onStartTimer }: { roomName: string, onStartTimer: 
       });
       
       if (response.ok) {
-        toast.success('Question added successfully');
         setQuestions([...questions, newQuestion]);
         setCurrentQuestion('');
         setAnswers(['', '', '', '']);
+        toast.success('Question added successfully', { id: toastId });
         setCorrectAnswer(null);
       } else {
         toast.error('Failed to add question');
@@ -162,6 +163,15 @@ const QuizForm = ({ roomName, onStartTimer }: { roomName: string, onStartTimer: 
       </div>      
       ) : (
         <div>
+          <div className="mb-4">
+            <button
+              type="button"
+              onClick={startTimer}
+              className="bg-gray-800 hover:bg-gray-950 text-white font-bold my-4 py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Start Timer
+            </button>
+          </div>
           <button
             className="mb-4 bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             onClick={() => setShowQuizForm(true)}
@@ -249,15 +259,6 @@ const QuizForm = ({ roomName, onStartTimer }: { roomName: string, onStartTimer: 
                 </ul>
               </div>
             )}
-          </div>
-          <div className="mb-4">
-            <button
-              type="button"
-              onClick={startTimer}
-              className="bg-gray-800 hover:bg-gray-950 text-white font-bold my-4 py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              Start Timer
-            </button>
           </div>
         </div>
       )}

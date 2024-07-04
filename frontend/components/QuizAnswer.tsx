@@ -146,7 +146,7 @@ const QuizAnswer = ({ roomName, roomId, playerId }: { roomName: string, roomId: 
   }
 
   if (questions.length === 0) {
-    return <div>Loading questions...</div>;
+    return <div>Loading...</div>;
   }
 
   const optionLabels = ['a', 'b', 'c', 'd'];
@@ -166,7 +166,7 @@ const QuizAnswer = ({ roomName, roomId, playerId }: { roomName: string, roomId: 
           <p className="text-lg mb-4">Duration: {quizDetails?.quizDuration} minutes</p>
           <button
             onClick={() => setQuizStarted(true)}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
             Start Quiz
           </button>

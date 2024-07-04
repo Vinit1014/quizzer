@@ -28,7 +28,7 @@ const RoomPage: React.FC<RoomPageProps> = ({ playerRole, roomName, roomId, playe
     };
     
     return (
-        <div className="relative border-gray-300 border-2 rounded-md mt-24 m-14 flex flex-col items-center justify-center p-10 text-center">
+        <div className="relative border-gray-200 shadow-lg border-2 rounded-md mt-24 m-14 flex flex-col items-center justify-center p-10 text-center">
             <Timer/>
             {/* <div className='mt-16'> */}
             {playerRole === 'TEACHER' ? (

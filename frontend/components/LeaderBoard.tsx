@@ -79,7 +79,7 @@ import { useState, useEffect, MutableRefObject, useRef } from "react";
 import FlipMove from "react-flip-move";
 import { io, Socket } from "socket.io-client";
 
-const LeaderBoard = ({ initialPlayers, roomId }: { initialPlayers: any, roomId: string }) => {
+const LeaderBoard = ({ initialPlayers, roomId }: { initialPlayers: any, roomId: any }) => {
   const [players, setPlayers] = useState(initialPlayers || []);
   const [updatedPlayerId, setUpdatedPlayerId] = useState<number | null>(null);
   const socketRef: MutableRefObject<Socket | null> = useRef(null);
@@ -146,9 +146,9 @@ const LeaderBoard = ({ initialPlayers, roomId }: { initialPlayers: any, roomId: 
   const sortedPlayers = [...players].sort((a, b) => b.points - a.points);
 
   return (
-    <div className="w-full p-4">
+    <div className="border-gray-300 border-2 rounded-md mt-24 m-24 p-4">
       <p className="text-center text-gray text-xl font-semibold mb-4">
-        🏆 Welcome to the Real-Time Leaderboard 🏆
+        🏆 Real-Time Leaderboard 🏆
       </p>
       <FlipMove>
         {sortedPlayers.map((player, i) => (

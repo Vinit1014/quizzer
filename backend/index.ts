@@ -4,7 +4,6 @@ import http from "http";
 import { Server } from "socket.io";
 import { prisma } from "./prisma";
 
-
 const PORT = process.env.PORT || 8000;
 
 const httpServer = http.createServer((req, res) => {

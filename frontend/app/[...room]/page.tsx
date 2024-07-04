@@ -2,6 +2,7 @@ import { prisma } from "@backend/prisma";
 import RoomPage from "@/components/RoomPage";
 import LeaderBoard from "@/components/LeaderBoard";
 import io, { Socket } from 'socket.io-client';
+import Navbar from "@/components/Navbar";
 
 const SOCKET_URL = 'http://localhost:8000'; // Replace with your server URL
 const socket: Socket = io(SOCKET_URL);
@@ -41,6 +42,7 @@ export default async function Page({ params }: { params: { room: string } }) {
 
     return (
         <>
+        <Navbar/>
         <RoomPage
             roomId={roomm?.id}
             playerId={params.room[1]}
