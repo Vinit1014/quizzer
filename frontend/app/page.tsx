@@ -1,14 +1,38 @@
-'use client'
 
 import Navbar from "@/components/Navbar";
 import AlertDialogDemo from "@/components/Alert";
-import { motion } from "framer-motion"
+
 
 export default async function Home() {
   
     return (
       <>
         <Navbar/>
+        <main className="flex min-h-screen flex-col items-center justify-center p-24">
+        
+          <div className="max-w-xl text-center">
+            <h2 className="text-4xl font-bold mb-8">Welcome to Quizzer</h2>
+            <p className="text-lg mb-4">"Compete with your colleagues with real time leaderboard."</p>
+            <div className="flex justify-between ">
+              <div 
+                className="">
+                <AlertDialogDemo text={"Join an existing room"} isJoin={true}/>
+                {/* <ButtonComp text={"Join an existing room"}/> */}
+              </div>
+              
+              <div className="font-bold py-1">
+                Or
+              </div>
+              
+              <div className="">
+                <AlertDialogDemo text={"Create a new room"} isJoin={false}/>
+                {/* <ButtonComp text={"Create a new room"}/> */}
+              </div>
+              
+            </div>
+          </div>
+        </main>
+        {/* <Navbar/>
         <main className="flex min-h-screen flex-col items-center justify-center p-24">
         
           <div className="max-w-xl text-center">
@@ -23,7 +47,7 @@ export default async function Home() {
               <div 
                 className="">
                 <AlertDialogDemo text={"Join an existing room"} isJoin={true}/>
-                {/* <ButtonComp text={"Join an existing room"}/> */}
+                
               </div>
               </motion.div>
               <motion.div
@@ -42,12 +66,12 @@ export default async function Home() {
               >
               <div className="">
                 <AlertDialogDemo text={"Create a new room"} isJoin={false}/>
-                {/* <ButtonComp text={"Create a new room"}/> */}
+                
               </div>
               </motion.div>
             </div>
           </div>
-        </main>
+        </main> */}
         
       </>
     );
