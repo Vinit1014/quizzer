@@ -4,7 +4,7 @@ import { addPoints } from '@/app/actions';
 import { decPoints } from '@/app/actions';
 import io, { Socket } from 'socket.io-client';
 
-const SOCKET_URL = 'http://localhost:8000'; // Replace with your server URL
+const SOCKET_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:8000'; // Replace with your server URL
 const socket: Socket = io(SOCKET_URL);
 
 const QuizAnswer = ({ roomName, roomId, playerId }: { roomName: string, roomId: any, playerId: any }) => {
