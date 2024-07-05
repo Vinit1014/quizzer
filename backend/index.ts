@@ -78,20 +78,20 @@ async function main(io: Server) {
     stream.stop();
   });
 
-  // await prisma.player.deleteMany()
-  // await prisma.answer.deleteMany()
-  // await prisma.question.deleteMany()
-  // await prisma.room.deleteMany()
+  await prisma.player.deleteMany()
+  await prisma.answer.deleteMany()
+  await prisma.question.deleteMany()
+  await prisma.room.deleteMany()
 
-  for await (const event of stream) {
-    console.log("just received an event:", event);  
+  // for await (const event of stream) {
+  //   console.log("just received an event:", event);  
     
-    if (event.action === "update") {
-      io.sockets.emit("player_points", event);
-    }
-    else if (event.action === "create"){
-      io.sockets.emit("new_player", event);
-      io.sockets.emit("update-leaderboard");
-    }
-  }
+  //   if (event.action === "update") {
+  //     io.sockets.emit("player_points", event);
+  //   }
+  //   else if (event.action === "create"){
+  //     io.sockets.emit("new_player", event);
+  //     io.sockets.emit("update-leaderboard");
+  //   }
+  // }
 }

@@ -190,7 +190,7 @@ const QuizAnswer = ({ roomName, roomId, playerId }: { roomName: string, roomId: 
           </div>
           <button
             onClick={handleConfirmAnswer}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             disabled={selectedAnswer === null}
           >
             Confirm
