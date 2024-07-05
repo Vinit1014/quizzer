@@ -49,7 +49,7 @@ export default async function Home() {
               transition={{ duration: 0.6 }}
               whileInView={{ opacity: 1, y: 0 }}
               >
-            <p className="text-lg mb-4">&quot;Compete with your colleagues with real time leaderboard&quot;</p>
+            <p className="text-lg mb-4">&quot;Compete with your colleagues with a real time leaderboard&quot;</p>
               </motion.div>
             <div className="flex justify-between ">
             <motion.div
