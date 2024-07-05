@@ -115,12 +115,12 @@ const QuizAnswer = ({ roomName, roomId, playerId }: { roomName: string, roomId: 
 
     if (questions[currentQuestionIndex].answers[selectedAnswer].isCorrect) {
       setAnswerFeedback('correct');
-      addPoints({ points: 5, playerId: playerId });
+      addPoints({ points: 4, playerId: playerId });
     } else {
       setAnswerFeedback('incorrect');
       decPoints({ points: 1, playerId: playerId });
     }
-
+    
     // Proceed to the next question after a delay
     setTimeout(() => {
       setAnswerFeedback(null);
