@@ -19,11 +19,19 @@ export async function POST(req:Request){
                 },
             },
             // include:{ players: true },
-        })    
-        return NextResponse.json({data:room});
+        })
+        
+        const player = await prisma.player.findFirst({
+            where:{
+                name: playerName
+            }
+        })
+
+        // return NextResponse.json({data:room});
+        return NextResponse.json({data:player,room});
         // return NextResponse.json({data:"Success"});
         // console.log("Successfull");
-    
+        
     }catch(error){
         // console.log(error);
         return NextResponse.json({ error: error }, { status: 500 });

@@ -56,6 +56,7 @@
 import { NextResponse } from "next/server";
 // import { prisma } from "@backend/prisma";
 import { prisma } from "@/prisma";
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -99,7 +100,7 @@ export async function POST(req: Request) {
       });
     }
 
-    return NextResponse.json({ data: player });
+    return NextResponse.json({ data: player, room });
 
   } catch (error) {
     return NextResponse.json({ error: error }, { status: 500 });
