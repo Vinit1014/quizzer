@@ -29,32 +29,23 @@ const RoomPage: React.FC<RoomPageProps> = ({ playerRole, roomName, roomId, playe
     };
     
     return (
-        <motion.div
-              initial={{ opacity: 0, y: -50 }}
-              transition={{ duration: 0.6 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              >
-        <div className="relative border-gray-200 shadow-lg border-2 rounded-md mt-24 m-14 flex flex-col items-center justify-center p-10 text-center">
-        <motion.div
+        // <motion.div initial={{ opacity: 0, y: -50 }}
+        //       transition={{ duration: 0.6 }}
+        //       whileInView={{ opacity: 1, y: 0 }} className="relative border-gray-200 shadow-lg border-2 rounded-md mt-24 m-14 flex flex-col items-center justify-center p-10 text-center">
+        <div className='relative border-gray-200 shadow-lg border-2 rounded-md mt-24 m-14 flex flex-col items-center justify-center text-center'>
+            <motion.div
               initial={{ opacity: 0 }}
               transition={{ duration: 0.6 }}
               whileInView={{ opacity: 1 }}
               >
-            <Timer/>
-              </motion.div>
+                <Timer/>
+            </motion.div>
             {/* <div className='mt-16'> */}
             {playerRole === 'TEACHER' ? (
-                <motion.div
-                initial={{ opacity: 0 }}
-                transition={{ duration: 0.6 }}
-                whileInView={{ opacity: 1 }}
-                >
-  
                 <QuizForm roomName={roomName} onStartTimer={handleStartTimer} />
-                </motion.div>
             ) : (
                 <motion.div
-              initial={{ opacity: 0 }}
+                initial={{ opacity: 0 }}
               transition={{ duration: 0.6 }}
               whileInView={{ opacity: 1 }}
               >
@@ -62,8 +53,8 @@ const RoomPage: React.FC<RoomPageProps> = ({ playerRole, roomName, roomId, playe
               </motion.div>
             )}
             {/* </div> */}
-        </div>
-        </motion.div>
+            </div>
+        // </motion.div>
     );
 };
 

@@ -5,6 +5,7 @@
 import React, { useState } from 'react';
 import { toast, Toaster } from 'sonner';
 import io, { Socket } from 'socket.io-client';
+import { motion } from 'framer-motion';
 
 const SOCKET_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:8000'; // Replace with your server URL
 const socket: Socket = io(SOCKET_URL);
@@ -115,7 +116,9 @@ const QuizForm = ({ roomName, onStartTimer }: { roomName: string, onStartTimer: 
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <motion.div className="container p-4" initial={{ opacity: 0 }}
+    transition={{ duration: 0.6 }}
+    whileInView={{ opacity: 1 }}>
       <Toaster richColors />
       {showQuizForm ? (
         <div>
@@ -262,7 +265,7 @@ const QuizForm = ({ roomName, onStartTimer }: { roomName: string, onStartTimer: 
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 
