@@ -14,7 +14,7 @@
     </ul>
     <h2>Tech Stack</h2>
     <ul>
-        <li><strong>Frontend:</strong> React, Next.js, Tailwind CSS, Framer Motion</li>
+        <li><strong>Frontend:</strong> Typescript, Next.js, Tailwind CSS, Framer Motion</li>
         <li><strong>Backend:</strong> Node.js, Express, Prisma, Socket.IO</li>
         <li><strong>Database:</strong> PostgreSQL</li>
         <li><strong>Deployment:</strong> Vercel (frontend), Render (backend)</li>
