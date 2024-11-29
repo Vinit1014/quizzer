@@ -38,6 +38,7 @@ const RoomPage: React.FC<RoomPageProps> = ({ playerRole, roomName, roomId, playe
               transition={{ duration: 0.6 }}
               whileInView={{ opacity: 1 }}
               >
+                {/* {timerStarted && <Timer/>} Implemented */} 
                 <Timer/>
             </motion.div>
             {/* <div className='mt-16'> */}

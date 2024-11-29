@@ -10,6 +10,10 @@ const socket: Socket = io(SOCKET_URL);
 const Timer = () => {
   const [timeLeft, setTimeLeft] = useState(0);
 
+  useEffect(()=>{
+    console.log(timeLeft);    
+  },[timeLeft])
+
   useEffect(() => {
     socket.on('updateTimer', (newTime: number) => {
       setTimeLeft(newTime);
@@ -24,8 +28,8 @@ const Timer = () => {
   const seconds = timeLeft % 60;
 
   return (
-    <div className="absolute top-4 right-4 bg-gray-800 text-white py-2 px-4 rounded-md shadow-md">
-      <h1 className="text-xl font-bold">
+    <div className="absolute top-16 right-4 bg-gray-800 text-white py-2 px-4 rounded-md shadow-md">
+      <h1 className="text-md font-bold">
         Time Left: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
       </h1>
     </div>

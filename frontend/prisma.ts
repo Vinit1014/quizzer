@@ -1,3 +1,12 @@
-import { PrismaClient } from '@prisma/client'
+// require('dotenv').config();
+import { PrismaClient } from '@prisma/client';
+import { withPulse } from '@prisma/extension-pulse/node';
+
 const prisma = new PrismaClient()
-export { prisma }
+  .$extends(
+    withPulse({
+      apiKey: process.env['PULSE_API_KEY'] as string
+    })
+);
+
+export { prisma };

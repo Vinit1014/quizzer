@@ -54,14 +54,13 @@
 
 
 import { NextResponse } from "next/server";
-// import { prisma } from "@backend/prisma";
 import { prisma } from "@/prisma";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { roomName, playerName } = body;
-
+    const { roomName, userId } = body;
+    
     // Find the room
     const room = await prisma.room.findFirst({
       where: { roomName },
@@ -72,20 +71,33 @@ export async function POST(req: Request) {
     if (!room) {
       return NextResponse.json({ error: "Room not found" }, { status: 404 });
     }
+    
+    // Fetch the user from the database to get their name
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    // If the user does not exist, return an error
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
 
     // Check if the player already exists in the room
-    let player = room.players.find((player) => player.name === playerName);
+    let player = room.players.find((player) => player.userId === userId);
 
     // If the player doesn't exist, create a new player and add to the room
     if (!player) {
       player = await prisma.player.create({
         data: {
-          name: playerName,
+          name: user.name,
           points: 0,
-          role: room.players.length === 0 ? "TEACHER" : "STUDENT", // Assign TEACHER role if it's the first player
+          role: "STUDENT", 
           room: {
             connect: { id: room.id },
           },
+          user: {
+            connect: { id: userId},
+          }
         },
       });
 

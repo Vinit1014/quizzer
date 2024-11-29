@@ -19,10 +19,10 @@ export async function POST(req:Request){
         return NextResponse.json({data:questions});
         // return NextResponse.json({data:"Success"});
         // console.log("Successfull");
-    
+        
     }catch(error){
         // console.log(error);
         return NextResponse.json({ error: error }, { status: 500 });
-        // return NextResponse.json({ erro  r: 'An error occurred while creating the room and player' }, { status: 500 });
+        // return NextResponse.json({ error: 'An error occurred while creating the room and player' }, { status: 500 });
     }
 }

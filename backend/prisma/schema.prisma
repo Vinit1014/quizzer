@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client-js"
@@ -11,25 +6,41 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id       String   @id @default(uuid())
+  name     String
+  email    String   @unique
+  password String
+  role     Role     
+  rooms    Room[]   @relation("UserRooms") // Teachers can create multiple rooms
+  players  Player[] @relation("UserPlayers") // Students can join multiple rooms as players
 }
 
 model Player {
   id     String @id @default(uuid())
-  name   String @unique
+  name   String 
   points Int
-  role   Role   @default(STUDENT)
+  role   Role   @default(STUDENT) // Players are typically students
   roomId String
   room   Room   @relation(fields: [roomId], references: [id])
+  userId String // Reference to the User who is a player
+  user   User   @relation("UserPlayers", fields: [userId], references: [id])
 }
 
 model Room {
   id              String     @id @default(uuid())
   roomName        String     @unique
-  players         Player[]
   quizTitle       String
   quizDescription String?
   quizDuration    Int
+  players         Player[]
   questions       Question[]
+  userId          String     // Link to the user (teacher) who created the room
+  user            User       @relation("UserRooms", fields: [userId], references: [id])
+  createdAt       DateTime   @default(now())
 }
 
 model Question {

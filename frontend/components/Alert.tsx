@@ -50,7 +50,7 @@ const AlertDialogDemo: React.FC<ButtonProps> = ({ text, isJoin }) => {
         console.log('Room and player created:', result);
         router.push(`/${result.room.roomName}/${result.data.id}`);
         toast.success('Room and player created successfully', { id: toastId });
-
+        
         const redirectToastId = toast.loading('Taking you to your room...', {
           duration: 8000,
         });
