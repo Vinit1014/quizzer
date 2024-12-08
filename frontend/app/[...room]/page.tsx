@@ -10,14 +10,13 @@ import QuestionManager from "@/components/Create/QuestionManager";
 import QuizAnswer from "@/components/QuizAnswer";
 import { supabase } from '@/utils/supabase';
 import { useRouter } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
 
 const SOCKET_URL = 'http://localhost:8000'; // Replace with your server URL
 const socket: Socket = io(SOCKET_URL);
 
 export default function Page({ params }: { params: { room: string } }) {
 
-    console.log("I am from URL "+params.room[0]);
-    
     const router = useRouter();
     const [user1, setUser] = useState<any>(null);
     const [role, setRole] = useState<string | null>(null);
@@ -25,22 +24,18 @@ export default function Page({ params }: { params: { room: string } }) {
     const [playerId, setPlayerId] = useState<string | null>(null);
     const [players, setPlayers] = useState<any[]>([]); // Store players for the leaderboard
 
-    useEffect(()=>{
-        console.log("I am user "+user1?.id);
-    },[user1])
-
-
     useEffect(() => {
-        const checkAuthAndFetchRole = async () => {
+        const checkAuthAndFetchData = async () => {
             const { data: { user } } = await supabase.auth.getUser();
-              
+
             if (!user) {
                 router.push('/login');
                 return;
             }
 
             try {
-                const response = await fetch('/api/getUserRole', {
+                // Fetch user role and set user
+                const roleResponse = await fetch('/api/getUserRole', {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -48,39 +43,49 @@ export default function Page({ params }: { params: { room: string } }) {
                     body: JSON.stringify({ userMail: user.email }),
                 });
 
-                if (!response.ok) {
+                if (!roleResponse.ok) {
                     throw new Error('Failed to fetch user role');
                 }
 
-                const data = await response.json();
-                setRole(data.user.role || null);
-                setUser(data.user);
+                const roleData = await roleResponse.json();
+                setRole(roleData.user.role || null);
+                setUser(roleData.user); // Set user here
 
-                // Fetch room and player information
+            } catch (error:any) {
+                console.error('Error fetching user role:', error.message);
+            }
+        };
+
+        checkAuthAndFetchData();
+    }, [router]);
+
+    useEffect(() => {
+        const fetchRoomAndPlayer = async () => {
+            if (!user1) return; // Ensure `user1` is set before proceeding
+
+            try {
                 const roomResponse = await fetch('/api/getRoomAndPlayer', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ roomName: params.room[0], userId: user1?.id }),
+                    body: JSON.stringify({ roomName: params.room[0], userId: user1.id }), // Use user1.id here
                 });
-        
+
                 if (!roomResponse.ok) throw new Error('Failed to fetch room or player data');
                 const { room, player } = await roomResponse.json();
-        
+
                 setRoom(room);
-        
                 if (player) {
-                    console.log("Got the player "+player);
-                    
-                    setPlayerId(player.id);
+                    console.log("Got the player " + player + " " + player.id);
+                    setPlayerId(player.id); // Set the correct playerId here
                 } else {
                     console.error('Player not found in this room');
                 }
 
                 // Fetch the initial leaderboard
-                await fetchLeaderboard(room.id);
+                fetchLeaderboard(room.id);
 
             } catch (error: any) {
-                console.error('Error fetching role or room data:', error.message);
+                console.error('Error fetching room or player data:', error.message);
             }
         };
 
@@ -91,9 +96,9 @@ export default function Page({ params }: { params: { room: string } }) {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ roommid: roomId }),
                 });
-                
+
                 if (!leaderboardResponse.ok) throw new Error('Failed to fetch leaderboard');
-                
+
                 const { data: playersData } = await leaderboardResponse.json();
                 setPlayers(playersData);
             } catch (error) {
@@ -101,7 +106,7 @@ export default function Page({ params }: { params: { room: string } }) {
             }
         };
 
-        checkAuthAndFetchRole();
+        fetchRoomAndPlayer();
 
         // Set up real-time leaderboard updates
         socket.on("update-leaderboard", () => {
@@ -114,14 +119,19 @@ export default function Page({ params }: { params: { room: string } }) {
         return () => {
             socket.off("update-leaderboard");
         };
-    }, [params.room[0], router, room]);
+    }, [params.room[0], user1, room]);
 
-    if (!user1 || !room) return <div>Loading...</div>;
+    if (!user1 || !room) return(
+        <div className="flex items-center justify-center">
+              <Loader2 className="h-6 w-6 animate-spin mr-2" />
+              <p className="text-lg">Loading...</p>
+        </div>
+    )
 
     return (
         <>
             {role === "TEACHER" ? (
-                <QuestionManager roomId={room.id} roomQuizDuration={room.quizDuration}/>
+                <QuestionManager roomId={room.id} roomQuizDuration={room.quizDuration} />
             ) : (
                 <QuizAnswer roomName={room.roomName} roomId={room.id} playerId={playerId} />
             )}

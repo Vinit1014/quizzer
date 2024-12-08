@@ -28,7 +28,7 @@ export async function POST(req: Request) {
         });
         
         
-        console.log("I am player "+player);
+        console.log("I am player with player Id "+player?.id);
         
         // Return the room and player data
         return NextResponse.json({ room, player }, { status: 200 });

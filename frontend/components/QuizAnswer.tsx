@@ -4,6 +4,9 @@ import { addPoints } from '@/app/actions';
 import { decPoints } from '@/app/actions';
 import io, { Socket } from 'socket.io-client';
 import Timer from './Timer';
+import { ArrowLeft, Loader2 } from 'lucide-react';
+import { Button } from './ui/button';
+import { useRouter } from 'next/navigation';
 
 const SOCKET_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:8000'; // Replace with your server URL
 const socket: Socket = io(SOCKET_URL);
@@ -18,10 +21,41 @@ const QuizAnswer = ({ roomName, roomId, playerId }: { roomName: string, roomId: 
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [playerPoints, setPlayerPoints] = useState<number>(0);
   const [timeLeft, setTimeLeft] = useState<number>(0);
+  const router = useRouter();
+//______________________________________________________________________________
+  const [hasCompleted, setHasCompleted] = useState(false);
+
+  const checkHasCompleted = async () => {
+    try {
+      const response = await fetch('/api/getHasCompleted', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ roomId, playerId }), // Assuming `playerId` is userId
+      });
+  
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Result I got "+result);
+        
+        setHasCompleted(result.data?.hasCompleted || false);
+      }
+    } catch (error) {
+      console.error('Error fetching hasCompleted status:', error);
+    }
+  };
+// ______________________________________________________________________
+
+  useEffect(()=>{
+    console.log("PlayerId inside QuizAnswer is "+playerId);
+    
+  },[playerId])
 
   useEffect(() => {
     if (timeLeft === 0 && quizStarted && !quizCompleted) {
-      setQuizCompleted(true);
+      setQuizCompleted(true); 
+      markAsCompleted();
       getPlayerPoints();
     }
   }, [timeLeft, quizStarted, quizCompleted]);
@@ -74,6 +108,7 @@ const QuizAnswer = ({ roomName, roomId, playerId }: { roomName: string, roomId: 
   const getQuizDetails = async () => {
     try {
       const response = await fetch("/api/getStudentQuiz", {
+
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -100,6 +135,7 @@ const QuizAnswer = ({ roomName, roomId, playerId }: { roomName: string, roomId: 
         },
         body: JSON.stringify({
           id: playerId,
+          roomId: roomId
         })
       });
       if (response.ok) {
@@ -111,7 +147,25 @@ const QuizAnswer = ({ roomName, roomId, playerId }: { roomName: string, roomId: 
     }
   }
 
+  const markAsCompleted = async () => {
+    try {
+      const response = await fetch('/api/updateHasCompleted', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ playerId, roomId }),
+      });
+
+      console.log("Response I got "+response);
+      
+    } catch (error) {
+      console.error('Error marking as completed:', error);
+    }
+  };  
+
   useEffect(() => {
+    checkHasCompleted();
     getQuestions();
     getQuizDetails();
   }, []);
@@ -136,36 +190,59 @@ const QuizAnswer = ({ roomName, roomId, playerId }: { roomName: string, roomId: 
       } else {
         // Handle quiz completion
         setQuizCompleted(true);
+        markAsCompleted();
         getPlayerPoints();
         console.log('Quiz completed');
       }
     }, 2000);
   };
 
+  const routeDashboard = ()=>{
+    router.push('/dashboard');
+  }
+
   if (quizCompleted) {
     return (
       <div className="quiz-completed w-full max-w-2xl mx-auto p-4">
+        <Button variant="outline" onClick={routeDashboard}>
+          <ArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
+        </Button>
         <h2 className="text-2xl mb-4">Quiz Completed</h2>
+        <p className="text-xl">Your Points: {playerPoints}</p>
+      </div>
+    );
+  }
+
+  if (hasCompleted) {
+    return (
+      <div className="quiz-completed w-full max-w-2xl mx-auto p-4">
+        <Button variant="outline" onClick={routeDashboard}>
+          <ArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
+        </Button>
+        <h2 className="text-2xl mb-4">Quiz Already Completed</h2>
         <p className="text-xl">Your Points: {playerPoints}</p>
       </div>
     );
   }
   
   if (questions.length === 0) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center">
+        <Loader2 className="h-6 w-6 animate-spin mr-2" />
+        <p className="text-lg">Loading...</p>
+      </div>
+    );
   }
 
   const optionLabels = ['a', 'b', 'c', 'd'];
 
-  // return(
-  //   <div>
-  //     <h1>{quizDetails.quizTitle}</h1>
-  //   </div>
-  // )
 
   return (
     <div className="quiz-answer w-full max-w-2xl mx-auto p-4">
       <Timer/>
+      <Button variant="outline" onClick={routeDashboard}>
+          <ArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
+      </Button>
       {!quizStarted ? (
         <>
           <h1 className="text-3xl mb-4">{quizDetails?.quizTitle}</h1>

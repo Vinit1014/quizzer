@@ -4,10 +4,10 @@ import { prisma } from "@/prisma";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { id } = body;
+    const { id, roomId } = body;
     
     const player = await prisma.player.findUnique({
-      where: { id },
+      where: { id, roomId },
       select: { points: true }
     });
     

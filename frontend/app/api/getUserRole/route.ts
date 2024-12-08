@@ -13,18 +13,18 @@ export async function POST(req: Request) {
     }
 
     // Fetch the user's role from the database
-    const user = await prisma.user.findUnique({
+    const user1 = await prisma.user.findUnique({
       where: { email: userMail },
     });
     
     // Check if user was found
-    if (!user) {
+    if (!user1) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
-    console.log("Fetched user "+user);
+    console.log("Fetched user "+user1);
     
     // Return the user's role
-    return NextResponse.json({ user: user });
+    return NextResponse.json({ user: user1 });
   } catch (error) {
     console.error('Error fetching user role:', error);
     return NextResponse.json({ error: 'An error occurred while fetching the user role' }, { status: 500 });
