@@ -1,13 +1,11 @@
 'use client'
 import Login from '@/components/Login'
-import React from 'react'
 
-const page = () => {
+
+export default function Page() {
   return (
     <div>
         <Login/>
     </div>
   )
 }
-
-export default page
