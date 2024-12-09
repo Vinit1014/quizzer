@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import QuizForm from '@/components/QuizForm';
+
 import QuizAnswer from '@/components/QuizAnswer';
 import Timer from '@/components/Timer';
 import io, { Socket } from 'socket.io-client';
@@ -43,7 +43,7 @@ const RoomPage: React.FC<RoomPageProps> = ({ playerRole, roomName, roomId, playe
             </motion.div>
             {/* <div className='mt-16'> */}
             {playerRole === 'TEACHER' ? (
-                <QuizForm roomName={roomName} onStartTimer={handleStartTimer} />
+                <div>QuizForm</div>
             ) : (
                 <motion.div
                 initial={{ opacity: 0 }}
