@@ -12,7 +12,7 @@ import { supabase } from '@/utils/supabase';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 
-const SOCKET_URL = 'http://localhost:8000'; // Replace with your server URL
+const SOCKET_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:8000';
 const socket: Socket = io(SOCKET_URL);
 
 export default function Page({ params }: { params: { room: string } }) {
