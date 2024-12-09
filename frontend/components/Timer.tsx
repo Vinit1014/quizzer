@@ -33,11 +33,6 @@ const Timer = () => {
         Time Left: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
       </h1>
     </div>
-    // <div className="timer flex justify-center items-center bg-gray-800 text-white py-4 px-6 rounded-md shadow-md">
-    //   <h1 className="text-2xl font-bold">
-    //     Time Left: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
-    //   </h1>
-    // </div>
   );
 };
 

@@ -116,14 +116,14 @@ const httpServer = http.createServer((req, res) => {
 
 const corsOrigins = [
   process.env.CLIENT_URL ?? "http://localhost:3000",
-  "http://localhost:3000",
+  process.env.CLIENT_URL,
 ];
 console.log(`cors origins: `, corsOrigins);
 
 const io = new Server(httpServer, {
   cors: {
-    // origin: '*',
-    origin: corsOrigins,
+    origin: '*',
+    // origin: corsOrigins,
     methods: ["GET", "POST"],
     // credentials: true,
   },
