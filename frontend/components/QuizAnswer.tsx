@@ -240,7 +240,7 @@ const QuizAnswer = ({ roomName, roomId, playerId }: { roomName: string, roomId: 
   return (
     <div className="quiz-answer w-full max-w-2xl mx-auto p-4">
       <Timer/>
-      <Button variant="outline" onClick={routeDashboard}>
+      <Button className='absolute top-16 left-4' variant="outline" onClick={routeDashboard}>
           <ArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
       </Button>
       {!quizStarted ? (
