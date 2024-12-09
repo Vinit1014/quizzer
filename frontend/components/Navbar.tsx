@@ -43,25 +43,25 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex justify-center">
-      <div className="flex border font-medium text-[24px] px-3 py-1 m-2 rounded-lg w-full items-center justify-between">
+    <div className="bg-gray-100 flex justify-center sticky top-0">
+      <div className="flex font-medium text-[24px] px-3 py-1 my-1 rounded-lg w-full items-center justify-between">
         <Link href="/">
-          <div className="flex cursor-pointer">Quizzer</div>
+          <div className="flex cursor-pointer font-bold">Quizzer</div>
         </Link>
         <div className="flex gap-x-2 items-center">
           {/* <a href="https://github.com/Vinit1014/rtleaderboard">
             <Github />
           </a> */}
           {isLoggedIn ? (
-            <button onClick={handleLogout} className="px-3 py-1 text-base bg-red-500 text-white rounded-lg">
-              Logout
+            <button onClick={handleLogout} className="px-3 py-1 text-base bg-orange-100 text-orange-700 hover:bg-orange-200 hover:text-orange-800 border-orange-300 rounded-lg">
+              Logout                                                                              
             </button>
           ) : (
             <>
-              <Link href="/login" className="px-3 py-1 bg-white text-base text-black underline rounded-lg">
-                Login
+              <Link href="/login" className="px-3 py-1 bg-white text-sm text-black rounded-lg hover:bg-gray-200">
+                Log In
               </Link>
-              <Link href="/signup" className="px-3 py-1 bg-green-700 text-base text-white rounded-lg">
+              <Link href="/signup" className="px-3 py-1 bg-gray-800 text-sm text-white hover:bg-gray-900 rounded-lg">
                 Sign Up
               </Link>
             </>

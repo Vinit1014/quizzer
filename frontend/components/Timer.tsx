@@ -29,7 +29,7 @@ const Timer = () => {
 
   return (
     <div className="absolute top-16 right-4 bg-gray-800 text-white py-2 px-4 rounded-md shadow-md">
-      <h1 className="text-md font-bold">
+      <h1 className="text-md font-normal">
         Time Left: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
       </h1>
     </div>
