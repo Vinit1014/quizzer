@@ -78,7 +78,6 @@ const SidebarTrial: React.FC<SidebarTrialProps> = ({ onQuizSelect, user }) => {
             {quizItems && quizItems.map((quiz) => (
               <SidebarMenuItem key={quiz.id} className="py-2 my-2">
                 <SidebarMenuButton asChild>
-                  {/* <button onClick={() => onQuizSelect(quiz)}> */}
                   <button onClick={() => routeQuiz(quiz)}>
                     <div className="">
                       <span className="">{quiz.quizTitle}</span>
@@ -93,6 +92,7 @@ const SidebarTrial: React.FC<SidebarTrialProps> = ({ onQuizSelect, user }) => {
       </SidebarGroup>
     </SidebarContent>
   );
+
 };
 
 export default SidebarTrial;

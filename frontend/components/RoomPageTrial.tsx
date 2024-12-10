@@ -1,8 +1,8 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import SidebarTrial from './SidebarTrial';
 import { SidebarProvider } from './ui/sidebar';
-import { Plus, Bot } from 'lucide-react';
+import { Plus, Bot, Menu, X } from 'lucide-react';
 import QuizFormTrial from './QuizFormTrial';
 import { useRouter } from 'next/navigation';
 
@@ -14,8 +14,26 @@ const RoomPageTrial: React.FC<RoomPageTrialProps> = ({ user }) => {
     const [selectedQuiz, setSelectedQuiz] = useState(null);
     const [currentView, setCurrentView] = useState('details');
     const [roomName, setRoomName] = useState(''); // State for storing roomName input
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const sidebarRef = useRef<HTMLDivElement>(null);
 
     const router = useRouter();
+
+    useEffect(() => {
+        const handleOutsideClick = (event: MouseEvent) => {
+            if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+                setIsSidebarOpen(false);
+            }
+        };
+
+        if (isSidebarOpen) {
+            document.addEventListener('mousedown', handleOutsideClick);
+        } else {
+            document.removeEventListener('mousedown', handleOutsideClick);
+        }
+
+        return () => document.removeEventListener('mousedown', handleOutsideClick);
+    }, [isSidebarOpen]);
 
     const handleQuizSelection = (quiz: any) => {
         setSelectedQuiz(quiz);
@@ -60,11 +78,33 @@ const RoomPageTrial: React.FC<RoomPageTrialProps> = ({ user }) => {
         user.role === 'TEACHER' ? (
             <SidebarProvider>
                 <div className="flex h-screen">
-                    <div className="w-64">
+                    {isSidebarOpen && (
+                        <div
+                            ref={sidebarRef}
+                            className="fixed inset-0 z-50 bg-white shadow-lg w-full md:hidden"
+                        >
+                            <div className="flex justify-end items-center p-4 border-b">
+                                {/* <h2 className="text-lg font-semibold">Past Quizzes</h2> */}
+                                <button
+                                    className="text-gray-600 hover:text-gray-800"
+                                    onClick={() => setIsSidebarOpen(false)}
+                                >
+                                    <X/>
+                                </button>
+                            </div>
+                            <SidebarTrial onQuizSelect={handleQuizSelection} user={user} />
+                        </div>
+                    )}
+
+                    <div className="hidden md:block w-64 ">
                         <SidebarTrial onQuizSelect={handleQuizSelection} user={user} />
                     </div>
                 </div>
                 <div className="flex-1 flex flex-col bg-gray-50">
+                    <div className='flex justify-between'>
+                        <button className='md:hidden m-2' onClick={() => setIsSidebarOpen(true)}>
+                            <Menu className='h-5 w-5'/>
+                        </button>
                     <div className="p-2 flex justify-end">
                         <button
                             className="flex items-center mr-1 bg-green-600 text-sm text-white py-1 px-4 rounded-lg hover:bg-green-700"
@@ -86,6 +126,7 @@ const RoomPageTrial: React.FC<RoomPageTrialProps> = ({ user }) => {
                             <span className="mr-1"><Bot className="w-4" /></span>
                             <div>Generate using AI</div>
                         </button>
+                    </div>
                     </div>
                     {!selectedQuiz ? (
                         <QuizFormTrial currentVieww={currentView} user={user} />
@@ -117,6 +158,8 @@ const RoomPageTrial: React.FC<RoomPageTrialProps> = ({ user }) => {
             </div>
         )
     );
+
+    
 };
 
 export default RoomPageTrial;

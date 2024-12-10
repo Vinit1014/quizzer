@@ -203,12 +203,12 @@ const QuizAnswer = ({ roomName, roomId, playerId }: { roomName: string, roomId: 
 
   if (quizCompleted) {
     return (
-      <div className="quiz-completed w-full max-w-2xl mx-auto p-4">
+      <div className="quiz-completed w-full max-w-2xl mx-auto p-4 text-center">
         <Button className='absolute top-16 left-4' variant="outline" onClick={routeDashboard}>
-          <ArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
+          <ArrowLeft className="mr-2 h-4 w-4 border-red-500 border-2" /> Back to Dashboard
         </Button>
-        <h2 className="text-2xl mb-4">Quiz Completed</h2>
-        <p className="text-xl">Your Points: {playerPoints}</p>
+        <h2 className="md:text-2xl mt-12 md:mt-2 mb-2">Quiz Completed</h2>
+        <p className="md:text-2xl">Your Points: {playerPoints}</p>
       </div>
     );
   }
@@ -219,8 +219,8 @@ const QuizAnswer = ({ roomName, roomId, playerId }: { roomName: string, roomId: 
         <Button className='absolute top-16 left-4' variant="outline" onClick={routeDashboard}>
           <ArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
         </Button>
-        <h2 className="text-2xl mb-4">Quiz Already Completed</h2>
-        <p className="text-xl">Your Points: {playerPoints}</p>
+        <h2 className="md:text-2xl mt-12 md:mt-2 mb-2">Quiz Already Completed</h2>
+        <p className="md:text-2xl">Your Points: {playerPoints}</p>
       </div>
     );
   }
@@ -245,7 +245,7 @@ const QuizAnswer = ({ roomName, roomId, playerId }: { roomName: string, roomId: 
       </Button>
       {!quizStarted ? (
         <>
-          <h1 className="text-3xl mb-4">{quizDetails?.quizTitle}</h1>
+          <h1 className="md:text-2xl mt-12 md:mt-2 mb-2">{quizDetails?.quizTitle}</h1>
           <p className="text-lg mb-4">{quizDetails?.quizDescription}</p>
           <p className="text-lg mb-4">Duration: {quizDetails?.quizDuration} minutes</p>
           <button

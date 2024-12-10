@@ -39,7 +39,7 @@ export function TestimonialsSection() {
               className="bg-gray-50 p-6 rounded-lg shadow"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}  
             >
               <p className="text-gray-600 italic mb-4">{testimonial.quote}</p>
               <div className="font-semibold">{testimonial.author}</div>

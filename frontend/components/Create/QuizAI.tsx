@@ -210,7 +210,7 @@ const QuizAI: React.FC<QuizAIProps> = ({
   return (
     <form onSubmit={handleAI} className="w-full max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-xl font-semibold text-center mb-4">Create New Quiz with AI</h2>
-
+      
       <div className="mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2">Room Name</label>
         <input

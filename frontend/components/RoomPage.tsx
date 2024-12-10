@@ -1,62 +1,62 @@
-// components/RoomPage.tsx
-'use client';
+// // components/RoomPage.tsx
+// 'use client';
 
-import React, { useState, useEffect } from 'react';
+// import React, { useState, useEffect } from 'react';
 
-import QuizAnswer from '@/components/QuizAnswer';
-import Timer from '@/components/Timer';
-import io, { Socket } from 'socket.io-client';
-import { motion } from 'framer-motion';
+// import QuizAnswer from '@/components/QuizAnswer';
+// import Timer from '@/components/Timer';
+// import io, { Socket } from 'socket.io-client';
+// import { motion } from 'framer-motion';
 
-const SOCKET_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:8000'; // Replace with your server URL
-const socket: Socket = io(SOCKET_URL);
+// const SOCKET_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:8000'; // Replace with your server URL
+// const socket: Socket = io(SOCKET_URL);
 
-interface RoomPageProps {
-    playerRole: 'TEACHER' | 'STUDENT';
-    roomName: string;
-    roomId: any;
-    playerId: any
-}
+// interface RoomPageProps {
+//     playerRole: 'TEACHER' | 'STUDENT';
+//     roomName: string;
+//     roomId: any;
+//     playerId: any
+// }
 
-const RoomPage: React.FC<RoomPageProps> = ({ playerRole, roomName, roomId, playerId}) => {
-    const [timerStarted, setTimerStarted] = useState(false);
-    // useEffect(()=>{
+// const RoomPage: React.FC<RoomPageProps> = ({ playerRole, roomName, roomId, playerId}) => {
+//     const [timerStarted, setTimerStarted] = useState(false);
+//     // useEffect(()=>{
 
-    // },[])
+//     // },[])
 
-    const handleStartTimer = () => {
-        setTimerStarted(true);
-    };
+//     const handleStartTimer = () => {
+//         setTimerStarted(true);
+//     };
     
-    return (
-        // <motion.div initial={{ opacity: 0, y: -50 }}
-        //       transition={{ duration: 0.6 }}
-        //       whileInView={{ opacity: 1, y: 0 }} className="relative border-gray-200 shadow-lg border-2 rounded-md mt-24 m-14 flex flex-col items-center justify-center p-10 text-center">
-        <div className='relative border-gray-200 shadow-lg border-2 rounded-md mt-24 m-14 flex flex-col items-center justify-center text-center'>
-            <motion.div
-              initial={{ opacity: 0 }}
-              transition={{ duration: 0.6 }}
-              whileInView={{ opacity: 1 }}
-              >
-                {/* {timerStarted && <Timer/>} Implemented */} 
-                <Timer/>
-            </motion.div>
-            {/* <div className='mt-16'> */}
-            {playerRole === 'TEACHER' ? (
-                <div>QuizForm</div>
-            ) : (
-                <motion.div
-                initial={{ opacity: 0 }}
-              transition={{ duration: 0.6 }}
-              whileInView={{ opacity: 1 }}
-              >
-                <QuizAnswer roomName={roomName} roomId={roomId} playerId={playerId}/>
-              </motion.div>
-            )}
-            {/* </div> */}
-            </div>
-        // </motion.div>
-    );
-};
+//     return (
+//         // <motion.div initial={{ opacity: 0, y: -50 }}
+//         //       transition={{ duration: 0.6 }}
+//         //       whileInView={{ opacity: 1, y: 0 }} className="relative border-gray-200 shadow-lg border-2 rounded-md mt-24 m-14 flex flex-col items-center justify-center p-10 text-center">
+//         <div className='relative border-gray-200 shadow-lg border-2 rounded-md mt-24 m-14 flex flex-col items-center justify-center text-center'>
+//             <motion.div
+//               initial={{ opacity: 0 }}
+//               transition={{ duration: 0.6 }}
+//               whileInView={{ opacity: 1 }}
+//               >
+//                 {/* {timerStarted && <Timer/>} Implemented */} 
+//                 <Timer/>
+//             </motion.div>
+//             {/* <div className='mt-16'> */}
+//             {playerRole === 'TEACHER' ? (
+//                 <div>QuizForm</div>
+//             ) : (
+//                 <motion.div
+//                 initial={{ opacity: 0 }}
+//               transition={{ duration: 0.6 }}
+//               whileInView={{ opacity: 1 }}
+//               >
+//                 <QuizAnswer roomName={roomName} roomId={roomId} playerId={playerId}/>
+//               </motion.div>
+//             )}
+//             {/* </div> */}
+//             </div>
+//         // </motion.div>
+//     );
+// };
 
-export default RoomPage;
+// export default RoomPage;
