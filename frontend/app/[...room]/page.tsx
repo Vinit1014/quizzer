@@ -2,10 +2,8 @@
 'use client'
 
 import React, { useEffect, useState, useMemo } from 'react';
-import RoomPage from "@/components/RoomPage";
 import LeaderBoard from "@/components/LeaderBoard";
 import io, { Socket } from 'socket.io-client';
-import Navbar from "@/components/Navbar";
 import QuestionManager from "@/components/Create/QuestionManager";
 import QuizAnswer from "@/components/QuizAnswer";
 import { supabase } from '@/utils/supabase';
