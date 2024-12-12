@@ -257,7 +257,7 @@ const QuizAnswer = ({ roomName, roomId, playerId }: { roomName: string, roomId: 
         </>
       ) : (
         <>
-          <h2 className="question-text text-2xl mb-4">{`${currentQuestionIndex + 1}. ${questions[currentQuestionIndex].questionText}`}</h2>
+          <h2 className="question-text md:text-2xl mt-12 md:mt-2 mb-2">{`${currentQuestionIndex + 1}. ${questions[currentQuestionIndex].questionText}`}</h2>
           <div className="answers w-full flex flex-col mb-4">
             {questions[currentQuestionIndex].answers.map((answer: any, index: number) => (
               <div
