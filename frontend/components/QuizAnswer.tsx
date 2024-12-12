@@ -205,7 +205,7 @@ const QuizAnswer = ({ roomName, roomId, playerId }: { roomName: string, roomId: 
     return (
       <div className="quiz-completed w-full max-w-2xl mx-auto p-4 text-center">
         <Button className='absolute top-16 left-4' variant="outline" onClick={routeDashboard}>
-          <ArrowLeft className="mr-2 h-4 w-4 border-red-500 border-2" /> Back to Dashboard
+          <ArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
         </Button>
         <h2 className="md:text-2xl mt-12 md:mt-2 mb-2">Quiz Completed</h2>
         <p className="md:text-2xl">Your Points: {playerPoints}</p>
