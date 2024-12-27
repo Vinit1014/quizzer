@@ -1,6 +1,10 @@
 
 # Quizzer v2.0  
 
+https://github.com/user-attachments/assets/36a23226-dd01-4ea8-9135-1f5d379a84aa
+
+
+
 🚀 **Quizzer** is an AI-Enhanced Real-Time Leaderboard Quiz Application designed to make learning engaging, interactive, and efficient. With tailored features for teachers and students, Quizzer empowers educators to create quizzes effortlessly and enables students to compete in real-time.  
 
 ## 🌟 **Features**  
