@@ -1,108 +1,15 @@
-// require('dotenv').config();
-
-// import http from "http";
-// import { Server } from "socket.io";
-// import { prisma } from "./prisma";
-
-// const PORT = process.env.PORT || 8000;
-
-// const httpServer = http.createServer((req, res) => {
-//   if (req.method === "GET" && req.url === "/") {
-//     res.writeHead(200, { "Content-Type": "text/plain" });
-//     res.end("Server is running ...");
-//   } else {
-//     res.writeHead(404, { "Content-Type": "text/plain" });
-//     res.end("404 Not Found");
-//   }
-// });
-
-// const corsOrigins = [
-//   process.env.CLIENT_URL ?? "http://localhost:3000",
-//   "http://localhost:3000",
-// ];
-// console.log(`cors origins: `, corsOrigins);
-
-// const io = new Server(httpServer, {
-//   cors: {
-//     // origin: '*',
-//     origin: corsOrigins,
-//     methods: ["GET", "POST"],
-//     // credentials: true,
-//   },
-// });
-
-// let timerInterval: NodeJS.Timeout | null = null;
-// let timeLeft = 0;
-
-// io.on("connection",(socket)=>{
-//   console.log(`A new user connected: ${socket.id}`);
-  
-//   socket.emit('updateTimer', timeLeft);
-
-//   socket.on("initializeTimer", (duration:number)=>{
-//     timeLeft = duration;
-//   })
-
-//   socket.on('start-timer', (duration:number)=>{
-//     if (timerInterval) clearInterval(timerInterval);
-//     timeLeft = duration * 60;
-//     timerInterval = setInterval(()=>{
-//       if (timeLeft > 0) {
-//         timeLeft--;
-//         io.emit('updateTimer', timeLeft);
-//       }
-//       else{
-//         clearInterval(timerInterval!);
-//         timerInterval = null;
-//         io.emit('quiz-ended');
-//       }
-//     }, 1000);
-//   })
-// })
-
-// httpServer.listen(PORT, async () => {
-//   console.log(`socket.io server is running on port ${PORT}`);
-//   await main(io);
-// });
-
-// process.on("SIGINT", () => {
-//   process.exit(0);
-// });
-
-// async function main(io: Server) {
-
-//   console.log("Working fine");
-//   const stream = await prisma.player.stream();
-  
-//   process.on("exit", () => {
-//     stream.stop();
-//   });
-
-//   await prisma.player.deleteMany()
-//   await prisma.answer.deleteMany()
-//   await prisma.question.deleteMany()
-//   await prisma.room.deleteMany()
-
-//   // for await (const event of stream) {
-//   //   console.log("just received an event:", event);  
-    
-//   //   if (event.action === "update") {
-//   //     io.sockets.emit("player_points", event);
-//   //   }
-//   //   else if (event.action === "create"){
-//   //     io.sockets.emit("new_player", event);
-//   //     io.sockets.emit("update-leaderboard");
-//   //   }
-//   // }
-// }
 
 require('dotenv').config();
-
 import http from "http";
 import { Server } from "socket.io";
-import { prisma } from "./prisma"; // Commented out for now
+import { createClient } from "@supabase/supabase-js";
 
 const PORT = process.env.PORT || 8000;
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY!;
+
+// initialize Supabase
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const httpServer = http.createServer((req, res) => {
   if (req.method === "GET" && req.url === "/") {
@@ -114,86 +21,61 @@ const httpServer = http.createServer((req, res) => {
   }
 });
 
-const corsOrigins = [
-  process.env.CLIENT_URL ?? "http://localhost:3000",
-  process.env.CLIENT_URL,
-];
-console.log(`cors origins: `, corsOrigins);
-
 const io = new Server(httpServer, {
   cors: {
-    origin: '*',
-    // origin: corsOrigins,
+    origin: "*",
     methods: ["GET", "POST"],
-    // credentials: true,
   },
 });
 
 let timerInterval: NodeJS.Timeout | null = null;
 let timeLeft = 0;
 
-// Socket.io connection setup
+// socket.io handlers
 io.on("connection", (socket) => {
   console.log(`A new user connected: ${socket.id}`);
-  
-  socket.emit('updateTimer', timeLeft);
+  socket.emit("updateTimer", timeLeft);
 
   socket.on("initializeTimer", (duration: number) => {
     timeLeft = duration;
   });
 
-  socket.on('start-timer', (duration: number) => {
+  socket.on("start-timer", (duration: number) => {
     if (timerInterval) clearInterval(timerInterval);
     timeLeft = duration * 60;
     timerInterval = setInterval(() => {
       if (timeLeft > 0) {
         timeLeft--;
-        io.emit('updateTimer', timeLeft);
+        io.emit("updateTimer", timeLeft);
       } else {
         clearInterval(timerInterval!);
         timerInterval = null;
-        io.emit('quiz-ended');
+        io.emit("quiz-ended");
       }
     }, 1000);
   });
 });
 
-httpServer.listen(PORT, async () => {
+httpServer.listen(PORT, () => {
   console.log(`socket.io server is running on port ${PORT}`);
-  // Commented out Prisma operations for now
-  await main(io);
+
+  // --- SUPABASE REALTIME SUBSCRIPTION ---
+  supabase
+    .channel("public:player_changes")
+    .on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "player" },
+      (payload) => {
+        console.log("Realtime payload:", payload);
+        if (payload.eventType === "UPDATE") {
+          io.emit("player_points", payload.new);
+        } else if (payload.eventType === "INSERT") {
+          io.emit("new_player", payload.new);
+          io.emit("update-leaderboard");
+        }
+        // handle DELETE if you need to remove players
+      }
+    )
+    .subscribe();
 });
-
-// Commented out the Prisma stream setup and cleanup for now
-process.on("SIGINT", () => {
-  process.exit(0);
-});
-
-async function main(io: Server) {
-  console.log("Working fine");
-  const stream = await prisma.player.stream();
-  
-  process.on("exit", () => {
-    stream.stop();
-  });
-
-  // await prisma.player.deleteMany()
-  // await prisma.answer.deleteMany()
-  // await prisma.question.deleteMany()
-  // await prisma.room.deleteMany()
-  
-  // Commented out stream event handling for now
-  for await (const event of stream) {
-    console.log("just received an event:", event);  
-    
-    if (event.action === "update") {
-      io.sockets.emit("player_points", event);
-    }
-    else if (event.action === "create"){
-      io.sockets.emit("new_player", event);
-      io.sockets.emit("update-leaderboard");
-    }
-  }
-}
-
 
