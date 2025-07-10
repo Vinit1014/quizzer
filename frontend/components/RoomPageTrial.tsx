@@ -107,7 +107,12 @@ const RoomPageTrial: React.FC<RoomPageTrialProps> = ({ user }) => {
                         </button>
                     <div className="p-2 flex justify-end">
                         <button
-                            className="flex items-center mr-1 bg-green-600 text-sm text-white py-1 px-4 rounded-lg hover:bg-green-700"
+                            disabled = {currentView === "details"}
+                            className={`flex items-center mr-1 text-sm py-1 px-4 rounded-lg transition 
+                                ${currentView === 'details' 
+                                ? 'bg-green-500 text-white opacity-90 cursor-not-allowed ring-1 ring-green-300' 
+                                : 'bg-green-600 text-white hover:bg-green-700'}
+                            `}
                             onClick={() => {
                                 setSelectedQuiz(null);
                                 setCurrentView('details');
@@ -117,7 +122,12 @@ const RoomPageTrial: React.FC<RoomPageTrialProps> = ({ user }) => {
                             <div>Create new quiz</div>
                         </button>
                         <button
-                            className="flex items-center bg-green-600 text-sm text-white py-1 px-4 rounded-lg hover:bg-green-700"
+                            disabled = {currentView === "AI"}
+                            className={`flex items-center mr-1 text-sm py-1 px-4 rounded-lg transition 
+                                ${currentView === 'AI' 
+                                ? 'bg-green-500 text-white opacity-90 cursor-not-allowed ring-1 ring-green-300' 
+                                : 'bg-green-600 text-white hover:bg-green-700'}
+                            `}
                             onClick={() => {
                                 setSelectedQuiz(null);
                                 setCurrentView('AI');

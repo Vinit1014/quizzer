@@ -57,14 +57,11 @@ const Dashboard = () => {
 
   return (
     <div>
-      {/* <h1>Dashboard</h1>
-      <p>Welcome to your dashboard!</p> */}
-      
       {/* Display content based on the user's role */}
         {role ? (
           <RoomPageTrial user={user}/>
         ):
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center mt-4">
               <Loader2 className="h-6 w-6 animate-spin mr-2" />
               <p className="text-lg">Loading...</p>
         </div>

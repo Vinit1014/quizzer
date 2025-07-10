@@ -1,43 +1,21 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Link from 'next/link';
 import { Github } from 'lucide-react';
 import { supabase } from '@/utils/supabase';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 
 const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const {isLoggedIn} = useAuth();
   const router = useRouter();
-
-  // Function to check and update login status
-  const updateLoginStatus = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    setIsLoggedIn(!!user);
-  };
-
-  useEffect(() => {
-    updateLoginStatus();
-
-    // Subscribe to authentication state changes
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      setIsLoggedIn(!!session?.user);
-      if (event === 'SIGNED_OUT') {
-        router.push('/');  // Redirect to homepage after logout
-      }
-    });
-
-    return () => {
-      authListener.subscription.unsubscribe();
-    };
-  }, []);
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
       console.error('Error logging out:', error.message);
     } else {
-      setIsLoggedIn(false);  // Update state immediately
       router.push('/');
     }
   };
@@ -53,8 +31,11 @@ const Navbar = () => {
             <Github />
           </a> */}
           {isLoggedIn ? (
-            <button onClick={handleLogout} className="px-3 py-1 text-base bg-orange-100 text-orange-700 hover:bg-orange-200 hover:text-orange-800 border-orange-300 rounded-lg">
-              Logout                                                                              
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-1 px-4 py-1 text-sm font-medium text-white bg-orange-600 rounded-lg shadow hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-400 transition duration-200"
+            >
+              Logout
             </button>
           ) : (
             <>

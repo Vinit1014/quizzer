@@ -123,7 +123,7 @@ export default function Page({ params }: { params: { room: string } }) {
   
     if (!user1 || !room)
       return (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center mt-4">
           <Loader2 className="h-6 w-6 animate-spin mr-2" />
           <p className="text-lg">Loading...</p>
         </div>

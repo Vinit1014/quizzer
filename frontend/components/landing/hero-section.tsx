@@ -3,8 +3,13 @@
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { useAuth } from "@/context/AuthContext"
+
+
 
 export function HeroSection() {
+
+  const { isLoggedIn } = useAuth();
   return (
     <section className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-20">
       <div className="container mx-auto px-4">
@@ -36,6 +41,13 @@ export function HeroSection() {
             </Button>
             <Button size="lg" variant="secondary">Learn More</Button>
           </motion.div>
+          {isLoggedIn && <div className="mt-4">
+            <Button size="lg" variant="secondary">
+              <Link href='/dashboard'>Go to Dashboard</Link>
+            </Button>
+          </div>
+          }
+          
         </div>
       </div>
     </section>

@@ -107,7 +107,7 @@ const QuestionsList: React.FC<QuestionsListProps> = ({
         <div className="bg-white shadow-md rounded-lg p-6">
           <h2 className="text-2xl font-bold mb-4">Current Questions Added</h2>
           {loading ? (
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center mt-4">
               <Loader2 className="h-6 w-6 animate-spin mr-2" />
               <p className="text-lg">Loading...</p>
             </div>
