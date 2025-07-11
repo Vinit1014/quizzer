@@ -41,7 +41,6 @@ const QuestionManager: React.FC<QuestionManagerProps> = ({ roomId, roomQuizDurat
   })
 
   const handleAddQuestion = async () => {
-    const toastId = toast.loading('Adding question...');
     const newQuestion: Question = {
       questionText: currentQuestion,
       answers: answers.map((answer, index) => ({
@@ -49,7 +48,20 @@ const QuestionManager: React.FC<QuestionManagerProps> = ({ roomId, roomQuizDurat
         isCorrect: index === correctAnswer,
       })),
     };
-
+    
+    if (newQuestion.questionText === '' && newQuestion.answers.length == 0) {
+      toast.error("Add question and options to it to save the question");
+      return;
+    }
+    else if (newQuestion.questionText === '') {
+      toast.error("Empty question can't be added");
+      return;
+    }
+    else if (newQuestion.answers.length == 0) {
+      toast.error("Add option to save the question");
+      return;
+    }
+    const toastId = toast.loading('Adding question...');
     try {
       const response = await fetch('/api/question', {
         method: 'POST',
