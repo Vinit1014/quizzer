@@ -5,6 +5,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import Navbar from "@/components/Navbar";
 import { Toaster } from "sonner";
 import { AuthProvider } from "@/context/AuthContext";
+import { QuizProvider } from "@/context/QuizContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,9 +23,11 @@ export default function RootLayout({
     <html lang="en">
         <body className={inter.className}>
           <AuthProvider>
-            <Toaster richColors/>
-            <Navbar/>
-            {children}
+            <QuizProvider>
+              <Toaster richColors/>
+              <Navbar/>
+              {children}
+            </QuizProvider>
           </AuthProvider>
         </body>
     </html>
