@@ -4,8 +4,9 @@
 import React, { useEffect, useState } from 'react';
 import QuestionForm from './QuestionForm';
 import QuestionsList from './QuestionsList';
-import { MoveLeft, Plus, XCircle } from 'lucide-react';
+import { ArrowLeft, MoveLeft, Plus, XCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import { Button } from "@/components/ui/button"
 
 interface Answer {
   answerText: string;
@@ -30,7 +31,7 @@ const QuestionManager: React.FC<QuestionManagerProps> = ({ roomId, roomQuizDurat
   const [answers, setAnswers] = useState<string[]>([]);  
   const [correctAnswer, setCorrectAnswer] = useState<number | null>(null);
   const [showQuestions, setShowQuestions] = useState(false);
-  const [currentView, setCurrentView] = useState('questions');
+  const [currentView, setCurrentView] = useState('list');
     
   useEffect(()=>{
     console.log(answers);
@@ -50,7 +51,7 @@ const QuestionManager: React.FC<QuestionManagerProps> = ({ roomId, roomQuizDurat
     };
     
     if (newQuestion.questionText === '' && newQuestion.answers.length == 0) {
-      toast.error("Add question and options to it to save the question");
+      toast.error("Empty question and options can't be added");
       return;
     }
     else if (newQuestion.questionText === '') {
@@ -99,12 +100,9 @@ const QuestionManager: React.FC<QuestionManagerProps> = ({ roomId, roomQuizDurat
     <div className="m-2">
       {currentView === 'questions' && (
         <>
-          <div className="hover:cursor-pointer flex" onClick={backToQuestionList}>
-            <span>
-              <MoveLeft className="w-3 justify-center" />
-            </span>
-            <div className="mx-2 text-xs my-1">Back to all questions</div>
-          </div>
+          <Button variant="outline" onClick={backToQuestionList}>
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back to all questions
+          </Button>
           <QuestionForm
             currentQuestion={currentQuestion}
             answers={answers}

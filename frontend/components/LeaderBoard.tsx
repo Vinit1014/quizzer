@@ -88,21 +88,28 @@ const LeaderBoard = ({ initialPlayers, roomId }: { initialPlayers: any; roomId: 
         <p className="text-center text-gray text-xl font-semibold mb-4">
           🏆 Real-Time Leaderboard 🏆
         </p>
-        <FlipMove>
-          {sortedPlayers.map((player, i) => (
-            <div
-              key={player.id}
-              className={`flex items-center justify-between p-2 mb-2 rounded-md shadow-md relative ${
-                updatedPlayerId === player.id ? "blink" : "bg-white"
-              }`}
-            >
-              <div className="text-lg font-semibold text-gray-800">
-                {i === 0 ? `${player.name} 🥇` : player.name}
+        {players.length > 0 ? 
+          (<FlipMove>
+            {sortedPlayers.map((player, i) => (
+              <div
+                key={player.id}
+                className={`flex items-center justify-between p-2 mb-2 rounded-md shadow-md relative ${
+                  updatedPlayerId === player.id ? "blink" : "bg-white"
+                }`}
+              >
+                <div className="text-lg font-semibold text-gray-800">
+                  {i === 0 ? `${player.name} 🥇` : player.name}
+                </div>
+                <div className="text-lg font-semibold text-gray-600">{player.points}</div>
               </div>
-              <div className="text-lg font-semibold text-gray-600">{player.points}</div>
+            ))}
+          </FlipMove>) : (
+            <div className="text-center py-8 text-gray-500">
+              <div className="text-lg font-medium">No players have joined yet</div>
+              <div className="text-sm mt-2">Share the room code to get started!</div>
             </div>
-          ))}
-        </FlipMove>
+          )
+        }
       </div>
     </motion.div>
   );

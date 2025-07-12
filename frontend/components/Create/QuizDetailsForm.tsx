@@ -104,7 +104,7 @@ const QuizDetailsForm: React.FC<QuizDetailsFormProps> = ({
         <button
           type="submit"
           className="bg-green-600 hover:bg-green-700 hover:cursor-pointer text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          disabled={!!durationError} // Disable button if there's an error
+          disabled={!!durationError} 
         >
           Save Quiz Details
         </button>
