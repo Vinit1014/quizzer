@@ -12,7 +12,7 @@ export async function POST(req:Request) {
         name,
         email,
         password,
-        role,  // Save role in the database
+        role,
       },
     });
 
