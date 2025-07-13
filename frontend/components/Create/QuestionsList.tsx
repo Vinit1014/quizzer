@@ -7,6 +7,7 @@ import Timer from '@/components/Timer'
 import io, { Socket } from 'socket.io-client'
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Eye, EyeOff, TimerIcon, Loader2 } from 'lucide-react'
+import { useQuiz } from '@/context/QuizContext'
 
 const SOCKET_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:8000'
 const socket: Socket = io(SOCKET_URL)
@@ -37,11 +38,12 @@ const QuestionsList: React.FC<QuestionsListProps> = ({
   roomQuizDuration
 }) => {
   const [questions, setQuestions] = useState<Question[]>([])
-  const [loading, setLoading] = useState(true)
-  const router = useRouter()
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
-  const [timerStarted, setTimerStarted] = useState(false)
-  const [mainDuration, setMainDuration] = useState<number>()
+  const [timerStarted, setTimerStarted] = useState(false);
+  const [mainDuration, setMainDuration] = useState<number>();
+  const {quizCompleted} = useQuiz();
 
   useEffect(() => {
     setMainDuration(roomQuizDuration)
@@ -97,9 +99,11 @@ const QuestionsList: React.FC<QuestionsListProps> = ({
           {showQuestions ? <EyeOff className="mr-2 h-4 w-4" /> : <Eye className="mr-2 h-4 w-4" />}
           {showQuestions ? 'Hide' : 'Show'} Current Questions
         </Button>
-        <Button onClick={startTimer} disabled={timerStarted}>
-          <TimerIcon className="mr-2 h-4 w-4" /> Start Timer
-        </Button>
+        {!quizCompleted && (
+          <Button onClick={startTimer} disabled={timerStarted}>
+            <TimerIcon className="mr-2 h-4 w-4" /> Start Timer
+          </Button>
+        )}
         {timerStarted && <Timer />}
       </div>
 

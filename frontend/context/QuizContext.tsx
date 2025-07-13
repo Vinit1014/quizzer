@@ -1,19 +1,20 @@
 "use client"
 import React, {createContext, useState, useEffect, useContext} from "react";
-import { Prisma } from "@prisma/client";
+import { prisma } from "@/prisma";
 
 interface QuizContextType {
-    quizCompleted: boolean
+    quizCompleted: boolean,
+    setQuizCompleted: (completed: boolean) => void;
 }
 
 const QuizContext = createContext<QuizContextType | null>(null);
 
 export const QuizProvider = ({children}: {children: React.ReactNode}) => {
 
-    const [quizCompleted, setIsCompleted] = useState(false);
+    const [quizCompleted, setQuizCompleted] = useState(false);
 
     return (
-        <QuizContext.Provider value={{quizCompleted}}>
+        <QuizContext.Provider value={{quizCompleted, setQuizCompleted}}>
             {children}
         </QuizContext.Provider>
     )

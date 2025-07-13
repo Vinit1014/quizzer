@@ -9,12 +9,14 @@ import QuizAnswer from "@/components/QuizAnswer";
 import { supabase } from '@/utils/supabase';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
+import { useQuiz } from '@/context/QuizContext';
 
 const SOCKET_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:8000';
 const socket: Socket = io(SOCKET_URL);
 
 export default function Page({ params }: { params: { room: string } }) {
     const router = useRouter();
+    const { setQuizCompleted } = useQuiz();
     const [user1, setUser] = useState<any>(null);
     const [role, setRole] = useState<string | null>(null);
     const [room, setRoom] = useState<any>(null);
@@ -57,66 +59,82 @@ export default function Page({ params }: { params: { room: string } }) {
       checkAuthAndFetchData();
     }, [router]);
   
+    // Effect 1: Initial room and player data fetching
+useEffect(() => {
+  const fetchRoomAndPlayer = async () => {
+    if (!user1) return;
+
+    try {
+      const roomResponse = await fetch("/api/getRoomAndPlayer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ roomName, userId: user1.id }),
+      });
+
+      if (!roomResponse.ok) throw new Error("Failed to fetch room or player data");
+      const { room, player } = await roomResponse.json();
+
+      setRoom(room);
+      setQuizCompleted(room.isQuizCompleted);
+      if (player) {
+        console.log("Got the player " + player + " " + player.id);
+        setPlayerId(player.id);
+      } else {
+        console.error("Player not found in this room");
+      }
+    } catch (error) {
+      console.error("Error fetching room or player data:", error.message);
+    }
+  };
+
+  fetchRoomAndPlayer();
+}, [roomName, user1]); // Only depends on roomName and user1
+
+    // Effect 2: Initial leaderboard fetch when room is available
     useEffect(() => {
-      const fetchRoomAndPlayer = async () => {
-        if (!user1) return; // Ensure `user1` is set before proceeding
-  
-        try {
-          const roomResponse = await fetch("/api/getRoomAndPlayer", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ roomName, userId: user1.id }), // Use memoized roomName
-          });
-  
-          if (!roomResponse.ok) throw new Error("Failed to fetch room or player data");
-          const { room, player } = await roomResponse.json();
-  
-          setRoom(room);
-          if (player) {
-            console.log("Got the player " + player + " " + player.id);
-            setPlayerId(player.id); // Set the correct playerId here
-          } else {
-            console.error("Player not found in this room");
-          }
-  
-          // Fetch the initial leaderboard
-          fetchLeaderboard(room.id);
-        } catch (error: any) {
-          console.error("Error fetching room or player data:", error.message);
-        }
-      };
-  
-      const fetchLeaderboard = async (roomId: string) => {
+      if (!room?.id) return;
+
+      const fetchLeaderboard = async (roomId) => {
         try {
           const leaderboardResponse = await fetch("/api/getleaderboard", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ roommid: roomId }),
           });
-  
+
           if (!leaderboardResponse.ok) throw new Error("Failed to fetch leaderboard");
-  
           const { data: playersData } = await leaderboardResponse.json();
           setPlayers(playersData);
         } catch (error) {
           console.error("Error fetching leaderboard:", error);
         }
       };
-  
-      fetchRoomAndPlayer();
-  
-      // Set up real-time leaderboard updates
-      socket.on("update-leaderboard", () => {
-        if (room) {
-          fetchLeaderboard(room.id); // Fetch leaderboard when update event is received
-        }
-      });
-  
-      // Clean up socket event listener on component unmount
-      return () => {
-        socket.off("update-leaderboard");
+
+      fetchLeaderboard(room.id);
+    }, [room?.id]); // Only runs when room.id changes
+
+    // Effect 3: Socket listener setup
+    useEffect(() => {
+      if (!room?.id) return;
+
+      const handleLeaderboardUpdate = () => {
+        // Fetch updated leaderboard
+        fetch("/api/getleaderboard", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ roommid: room.id }),
+        })
+          .then(res => res.json())
+          .then(({ data: playersData }) => setPlayers(playersData))
+          .catch(error => console.error("Error fetching leaderboard:", error));
       };
-    }, [roomName, user1, room]);
+
+      socket.on("update-leaderboard", handleLeaderboardUpdate);
+
+      return () => {
+        socket.off("update-leaderboard", handleLeaderboardUpdate);
+      };
+    }, [room?.id]); // Only re-run when room.id changes
   
     // Memoize players to avoid unnecessary re-renders of LeaderBoard
     const memoizedPlayers = useMemo(() => players, [players]);
@@ -132,7 +150,7 @@ export default function Page({ params }: { params: { room: string } }) {
     return (
       <>
         {role === "TEACHER" ? (
-          <QuestionManager roomId={room.id} roomQuizDuration={room.quizDuration} />
+          <QuestionManager roomId={room.id} roomQuizDuration={room.quizDuration} quizTitle={room.quizTitle} quizDescription={room.quizDescription}/>
         ) : (
           <QuizAnswer roomName={room.roomName} roomId={room.id} playerId={playerId} />
         )}

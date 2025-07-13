@@ -162,12 +162,36 @@ const QuizAnswer = ({ roomName, roomId, playerId }: { roomName: string, roomId: 
     } catch (error) {
       console.error('Error marking as completed:', error);
     }
-  };  
+  };
+  
+  const markQuizAsCompleted = async () => {
+    try {
+      const response = await fetch('/api/markQuizComplete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }, 
+        body: JSON.stringify({
+          roomId: roomId
+        })
+      })
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log('Quiz marked as completed:', data);
+      } else {
+        console.error('Error:', data.message);
+      }
+    } catch (error) {
+      console.error('Error marking quiz as complete', error);
+    }
+  }
 
   useEffect(() => {
     checkHasCompleted();
     getQuestions();
     getQuizDetails();
+    markQuizAsCompleted();
   }, []);
 
   const handleConfirmAnswer = () => {
