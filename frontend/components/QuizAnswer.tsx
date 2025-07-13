@@ -4,7 +4,7 @@ import { addPoints } from '@/app/actions';
 import { decPoints } from '@/app/actions';
 import io, { Socket } from 'socket.io-client';
 import Timer from './Timer';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { ArrowLeft, Loader2, Trophy, CheckCircle, Star } from 'lucide-react';
 import { Button } from './ui/button';
 import { useRouter } from 'next/navigation';
 
@@ -231,8 +231,45 @@ const QuizAnswer = ({ roomName, roomId, playerId }: { roomName: string, roomId: 
         <Button className='absolute top-16 left-4' variant="outline" onClick={routeDashboard}>
           <ArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
         </Button>
-        <h2 className="md:text-2xl mt-12 md:mt-2 mb-2">Quiz Completed</h2>
-        <p className="md:text-2xl">Your Points: {playerPoints}</p>
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+          {/* Header */}
+          <div className="bg-gradient-to-r from-green-500 to-emerald-600 px-8 py-12 text-center">
+            <div className="flex justify-center mb-4">
+              <div className="bg-white/20 backdrop-blur-sm rounded-full p-4">
+                <CheckCircle className="w-16 h-16 text-white" />
+              </div>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
+              Quiz Completed!
+            </h2>
+            <p className="text-green-100 text-lg">
+              Congratulations on finishing the quiz
+            </p>
+          </div>
+
+          {/* Points Display */}
+          <div className="px-8 py-8">
+            <div className="text-center">
+              <div className="inline-flex items-center gap-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-8 py-4 rounded-2xl shadow-lg mb-6">
+                <Trophy className="w-8 h-8" />
+                <div>
+                  <p className="text-sm font-medium opacity-90">Your Points</p>
+                  <p className="text-3xl font-bold">{playerPoints}</p>
+                </div>
+              </div>
+              
+              <div className="flex justify-center space-x-2 mt-6">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-6 h-6 text-yellow-400 fill-current" />
+                ))}
+              </div>
+              
+              <p className="text-gray-600 mt-4 text-lg">
+                Great job! Your score has been recorded.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
