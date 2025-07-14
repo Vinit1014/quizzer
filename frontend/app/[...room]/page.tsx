@@ -94,7 +94,7 @@ useEffect(() => {
     useEffect(() => {
       if (!room?.id) return;
 
-      const fetchLeaderboard = async (roomId) => {
+      const fetchLeaderboard = async (roomId: string) => {
         try {
           const leaderboardResponse = await fetch("/api/getleaderboard", {
             method: "POST",
