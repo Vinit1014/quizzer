@@ -83,7 +83,7 @@ useEffect(() => {
         console.error("Player not found in this room");
       }
     } catch (error) {
-      console.error("Error fetching room or player data:", error.message);
+      console.error("Error fetching room or player data:", (error as Error).message);
     }
   };
 
